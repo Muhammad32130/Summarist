@@ -8,6 +8,9 @@ import { useRef } from "react";
 import { auth } from "../Firebase";
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router";
+import landing from '../images/landing.png'
+import logo from '../images/logo.png'
+
 
 function Home({ modal, setmodal }) {
   const [signup, setsignup] = useState(false)
@@ -86,7 +89,7 @@ useEffect(() => {
       <nav className="nav">
         <div className="nav__wrapper">
           <figure className="nav__img--mask">
-            <img className="nav__img" src="" alt="logo" />
+            <img className="nav__img" src={logo} alt="logo" />
           </figure>
           <ul className="nav__list--wrapper">
             <li
@@ -227,7 +230,7 @@ useEffect(() => {
                 </button>
               </div>
               <figure className="landing__image--mask">
-                <img src="" alt="landing" />
+                <img src={landing} alt="landing" />
               </figure>
             </div>
           </div>
