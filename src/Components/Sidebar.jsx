@@ -28,7 +28,7 @@ function Sidebar() {
           <NavLink
             to="/for-you"
             className="s-li click"
-            activeClassName="activate"
+            activeclassname="activate"
           >
             <div className="sidebar-active"></div>
             <AiOutlineHome className="li-ico"></AiOutlineHome>
@@ -37,7 +37,7 @@ function Sidebar() {
           <NavLink
             to="/Library"
             className="s-li click"
-            activeClassName="activate"
+            activeclassname="activate"
          >
             <div className="sidebar-active"></div>
             <BsBookmark className="li-ico"></BsBookmark>
@@ -58,7 +58,7 @@ function Sidebar() {
           <NavLink
            to="/settings"
            className="s-li click"
-           activeClassName="activate"
+           activeclassname="activate"
           >
             <div className="sidebar-active"></div>
             <AiOutlineSetting className="li-ico"></AiOutlineSetting>

@@ -1,8 +1,83 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useRef, useState } from 'react'
+import { AiFillPlayCircle } from 'react-icons/ai'
+import Books from '../Components/Books'
 
 function ForYou() {
+const [selected, setselected] = useState(null)
+const [recommended, setrecommended] = useState(null)
+const audioRef = useRef(null)
+
+  function getselected(){
+
+    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected').then((res)=>{
+      setselected(res.data[0])
+    })
+  }
+  function getrecommended(){
+    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended').then((res)=>{
+setrecommended(res.data.slice(0, 5))
+    })
+  }
+  
+  function calculateAudio(){  
+    let audioTime = null
+      const time = audioRef?.current?.duration
+      const minutes = Math.floor(time / 60);
+      const remainingSeconds = Math.floor(time % 60);
+      if (minutes === 0 && selected) {
+        audioTime = `${remainingSeconds} secs`
+      } else if (remainingSeconds === 0) {
+       audioTime = `${minutes} mins`
+      } else if(selected) {
+        audioTime = `${minutes} mins ${remainingSeconds} secs`
+      }
+     const newobj = {...selected, audioTime: audioTime}
+      setselected(newobj)
+
+
+  }
+  
+  useEffect(()=>{
+    getselected()
+    getrecommended()
+  },[])
+
   return (
-    <div>ForYou</div>
+    <div className='for-you__wrapper'>
+      <div className='for-you__title'>
+      Selected just for you
+      </div>
+      <a href="" className="selected__book">
+        <div className="selected__book--sub-title">
+          {selected?.subTitle}
+        </div>
+        <div className="selected__book--line"></div>
+        <div className="selected__book--content">
+          <figure className="book__image--wrapper">
+            <img src={selected?.imageLink} alt="" className="book__image" />
+          </figure>
+          <div className="selected__book--text">
+            <div className="selected__book--title">{selected?.title}</div>
+            <div className="selected__book--author">{selected?.author}</div>
+            <div className="selected__book--duration-wrapper">
+              <div className="selected__book--icon"><AiFillPlayCircle className='selected__book--icon svg'></AiFillPlayCircle></div>
+              <div className="selected__book--duration">{selected?.audioTime}</div>
+            </div>
+          </div>
+        </div>
+        <audio onLoadedMetadata={()=>{calculateAudio()}} ref={audioRef} src={selected?.audioLink}></audio>
+      </a>
+      <div>
+      <div className='for-you__title'>Recommended For You</div>
+    <div className="for-you__sub--title">We think you'll like these</div>
+    <Books setrecommended={setrecommended} recommended={recommended}></Books>
+      </div>
+      <div>
+      <div className='for-you__title'>Suggested Books</div>
+    <div className="for-you__sub--title">Browse those books</div>
+      </div>
+    </div>
   )
 }
 

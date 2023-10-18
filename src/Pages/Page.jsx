@@ -18,10 +18,15 @@ const location = useLocation()
 
       <Sidebar ></Sidebar>
       <Search></Search>
+      <div className="row">
+    <div className="container">
+
 {location.pathname ==='/for-you' && <ForYou></ForYou>}
 {location.pathname ==='/Library' && <Library></Library>}
 {location.pathname ==='/settings' && <Settings></Settings>}
 
+    </div>
+      </div>
 
       </div>
     </div>
