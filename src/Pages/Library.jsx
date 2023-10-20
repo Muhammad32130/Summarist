@@ -1,8 +1,15 @@
-import React from 'react'
+import Login from '../Components/Login'
 
-function Library() {
+function Library({user, setmodal}) {
   return (
-    <div>Library</div>
+    <>
+    {user ?
+      <div>
+        settings
+      </div>
+      : <Login setmodal={setmodal}></Login>
+    }
+    </>
   )
 }
 

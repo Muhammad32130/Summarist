@@ -1,4 +1,3 @@
-import React from "react";
 import logo from "../images/logo.png";
 import {
   AiOutlineHome,
@@ -9,15 +8,9 @@ import { BsBookmark } from "react-icons/bs";
 import { RiBallPenLine } from "react-icons/ri";
 import { BiHelpCircle } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
-import { useRef, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-
-function Sidebar() {
-
-
-
-
-
+ 
+function Sidebar({user, signout, setmodal, modal}) {
   return (
     <div className="sidebar">
       <div className="slogo-wrap">
@@ -70,11 +63,17 @@ function Sidebar() {
             Help & Support
           </Link>
 
-          <Link className="s-li" href="">
+          {user ? <Link onClick={()=>{signout()}} className="s-li" href="">
             <div className="sidebar-active"></div>
             <FiLogOut className="li-ico"></FiLogOut>
             Logout
-          </Link>
+          </Link>:
+          <Link onClick={()=>{setmodal(true)}} className="s-li" href="">
+          <div className="sidebar-active"></div>
+          <FiLogOut className="li-ico"></FiLogOut>
+          Login
+        </Link>
+          }
         </div>
       </div>
     </div>

@@ -3,9 +3,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AiFillPlayCircle } from 'react-icons/ai'
 import Books from '../Components/Books'
 
-function ForYou() {
+function ForYou({user}) {
 const [selected, setselected] = useState(null)
 const [recommended, setrecommended] = useState(null)
+const [Suggested, setsuggested] = useState(null)
 const audioRef = useRef(null)
 
   function getselected(){
@@ -19,7 +20,40 @@ const audioRef = useRef(null)
 setrecommended(res.data.slice(0, 5))
     })
   }
+  function getSuggested(){
+    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested').then((res)=>{
+setsuggested(res.data.slice(0, 5))
+    })
+  }
   
+  const [audiotime, setaudiotime] = useState([]);
+  const timeDisplay = document.querySelectorAll('.recommended')
+  const suggestedTime = document.querySelectorAll('.suggested')
+
+  const formatTime = (time, index) => {
+    if ( time !== undefined && audiotime.length !== 10) {
+      const minutes = Math.floor(time / 60);
+      const formatMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+      const seconds = Math.floor(time % 60);
+      const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+      setaudiotime((prevAudiotime) => [
+        ...prevAudiotime,
+        `${formatMinutes}:${formatSeconds}`
+      ])
+    }
+    
+    
+  };
+  useEffect(()=>{
+    for (let i = 0; i <timeDisplay.length; i++) {
+        timeDisplay[i].innerHTML = audiotime[i]
+    }
+    for (let i = 0; i <suggestedTime.length; i++) {
+        suggestedTime[i].innerHTML = audiotime[i+5]
+    }
+  },[timeDisplay])
+
+
   function calculateAudio(){  
     let audioTime = null
       const time = audioRef?.current?.duration
@@ -34,12 +68,11 @@ setrecommended(res.data.slice(0, 5))
       }
      const newobj = {...selected, audioTime: audioTime}
       setselected(newobj)
-
-
   }
   
   useEffect(()=>{
     getselected()
+    getSuggested()
     getrecommended()
   },[])
 
@@ -71,11 +104,12 @@ setrecommended(res.data.slice(0, 5))
       <div>
       <div className='for-you__title'>Recommended For You</div>
     <div className="for-you__sub--title">We think you'll like these</div>
-    <Books setrecommended={setrecommended} recommended={recommended}></Books>
+    <Books formatTime={formatTime}  type={'recommended'} setrecommended={setrecommended} recommended={recommended}></Books>
       </div>
       <div>
       <div className='for-you__title'>Suggested Books</div>
     <div className="for-you__sub--title">Browse those books</div>
+      <Books formatTime={formatTime} type={'suggested'} setrecommended={setsuggested} recommended={Suggested}></Books>
       </div>
     </div>
   )
