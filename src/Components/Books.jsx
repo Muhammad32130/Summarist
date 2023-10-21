@@ -1,9 +1,9 @@
 import { AiOutlineStar } from "react-icons/ai";
 import { BiTimeFive } from "react-icons/bi";
+import { Link, useParams } from "react-router-dom";
 
 
 function Books({ recommended, type ,setrecommended, formatTime }) {
-
 
 
 
@@ -17,7 +17,12 @@ function Books({ recommended, type ,setrecommended, formatTime }) {
       {recommended &&
         recommended?.map((book, index) => {
           return (
-            <a href="" key={index} className="for-you__recommended--books-link">
+            <Link href="" to={`/book/${book.id}`} key={index} className="for-you__recommended--books-link">
+              {book.subscriptionRequired &&
+                
+                <div className="book__pill book__pill--subscription-required">Premium</div>
+            
+            }
               <audio 
                 onLoadedMetadata={(e) => {
                   formatTime(e.target.duration, index);
@@ -48,7 +53,7 @@ function Books({ recommended, type ,setrecommended, formatTime }) {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
           );
         })}
     </div>

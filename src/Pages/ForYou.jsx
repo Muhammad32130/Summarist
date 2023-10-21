@@ -3,11 +3,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AiFillPlayCircle } from 'react-icons/ai'
 import Books from '../Components/Books'
 
-function ForYou({user}) {
-const [selected, setselected] = useState(null)
+function ForYou({user, audioRef, selected ,setselected,calculateAudio,setsuggested, Suggested }) {
 const [recommended, setrecommended] = useState(null)
-const [Suggested, setsuggested] = useState(null)
-const audioRef = useRef(null)
+
+console.log('for-you')
 
   function getselected(){
 
