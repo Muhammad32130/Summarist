@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router";
 import Sidebar from "./Sidebar";
 import Search from "./Search";
@@ -9,10 +9,12 @@ import { BsMic } from "react-icons/bs";
 import {TbBulb} from 'react-icons/tb'
 import {PiBookOpenTextBold} from 'react-icons/pi'
 import {BsBookmark} from 'react-icons/bs'
+import { Link } from "react-router-dom";
 
 function Book({ setmodal,user, signout }) {
   const { id } = useParams();
   const [audiotime, setaudiotime] = useState(null);
+  const [play, setplay] = useState(false);
   const audioRef = useRef()
     const [book, setbook] =useState(null)
 
@@ -79,10 +81,12 @@ getbook()
                 </div>
               </div>
               <div className="inner-book__read--btn-wrapper">
+                <Link to={`/player/${book.id}`}>
                 <button className="inner-book__read--btn">
                   <div className="inner-book__read--icon"><PiBookOpenTextBold></PiBookOpenTextBold></div>
                   <div className="inner-book__read--text">Read</div>
                 </button>
+                </Link>
                 <button className="inner-book__read--btn">
                   <div className="inner-book__read--icon"><BsMic></BsMic></div>
                   <div className="inner-book__read--text">Listen</div>

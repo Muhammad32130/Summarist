@@ -8,15 +8,20 @@ import { BsBookmark } from "react-icons/bs";
 import { RiBallPenLine } from "react-icons/ri";
 import { BiHelpCircle } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
-import { Link, NavLink } from "react-router-dom";
- 
-function Sidebar({user, signout, setmodal, modal}) {
+import { Link, NavLink, useParams } from "react-router-dom";
+import {VscCaseSensitive} from "react-icons/vsc"
+
+
+function Sidebar({user,textsize, setsize, signout, setmodal, modal,id}) {
+
+  
+  console.log(id)
   return (
     <div className="sidebar">
-      <div className="slogo-wrap">
+      <div className="slogo-wrap" >
         <img className="sidebar-logo" src={logo} alt="" />
       </div>
-      <div className="li-wrap">
+      <div className="li-wrap" style={id && {height: 'calc(100vh - 170px)'}}>
         <div className="sidebar-li">
           <NavLink
             to="/for-you"
@@ -46,6 +51,21 @@ function Sidebar({user, signout, setmodal, modal}) {
             <AiOutlineSearch className="li-ico"></AiOutlineSearch>
             Search
           </Link>
+          {id && 
+          <div  className="sidebar__link--wrapper sidebar__font--size-wrapper">
+            <div onClick={()=>{setsize('16')}} className={`sidebar__link--text sidebar__font--size-icon ${textsize==='16' && 'sidebar__font--size-icon--active'}`}>
+            <VscCaseSensitive className="sidebar__font--size-icon-small"></VscCaseSensitive>
+          </div>
+            <div onClick={()=>{setsize('18')}} className={`sidebar__link--text sidebar__font--size-icon ${textsize==='18' && 'sidebar__font--size-icon--active'}`}>
+            <VscCaseSensitive className="sidebar__font--size-icon-medium"></VscCaseSensitive>
+          </div>
+            <div onClick={()=>{setsize('22')}} className={`sidebar__link--text sidebar__font--size-icon ${textsize==='22' && 'sidebar__font--size-icon--active'}`}>
+            <VscCaseSensitive className="sidebar__font--size-icon-large"></VscCaseSensitive>
+          </div>
+            <div onClick={()=>{setsize('26')}} className={`sidebar__link--text sidebar__font--size-icon ${textsize==='26' && 'sidebar__font--size-icon--active'}`}>
+            <VscCaseSensitive className="sidebar__font--size-icon-xlarge"></VscCaseSensitive>
+          </div>
+          </div>}
         </div>
         <div className="sidebar-li ">
           <NavLink

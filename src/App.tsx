@@ -1,7 +1,7 @@
 import "./App.css";
 import Home from "./Pages/Home.jsx";
 import { useState, useEffect, useRef } from "react";
-import { Route, Routes, BrowserRouter, useParams } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Page from "./Pages/Page";
 import {
   createUserWithEmailAndPassword,
@@ -15,16 +15,17 @@ import { DocumentData, doc, getDoc, setDoc } from "firebase/firestore";
 import Book from "./Components/Book";
 import Library from "./Pages/Library";
 import Settings from "./Pages/Settings";
+import Player from "./Pages/Player";
 
 function App() {
   const [User, setuser] = useState<User | null>(null);
   const [data, setdata] = useState<DocumentData | null>(null);
-  const [modal, setmodal] = useState(false);
-  const [signup, setsignup] = useState(false);
+  const [modal, setmodal] = useState<boolean>(false);
+  const [signup, setsignup] = useState<boolean>(false);
   const [Suggested, setsuggested] = useState(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [selected, setselected] = useState<any>(null);
-console.log(selected)
+
   function Signupuser(e: any) {
     e.preventDefault();
     const email = e.target[0].value;
@@ -153,8 +154,14 @@ console.log(selected)
             element={
               <Library
                 signout={signout}
-                setmodal={setmodal}
+                signup={signup}
+                setsignup={setsignup}
                 user={User}
+                guestLogin={guestLogin}
+                Signupuser={Signupuser}
+                Loginuser={Loginuser}
+                modal={modal}
+                setmodal={setmodal}
               ></Library>
             }
           ></Route>
@@ -163,7 +170,13 @@ console.log(selected)
             element={
               <Settings
                 signout={signout}
+                signup={signup}
+                setsignup={setsignup}
                 user={User}
+                guestLogin={guestLogin}
+                Signupuser={Signupuser}
+                Loginuser={Loginuser}
+                modal={modal}
                 data={data}
                 setmodal={setmodal}
               ></Settings>
@@ -175,6 +188,7 @@ console.log(selected)
               <Book setmodal={setmodal} user={User} signout={signout}></Book>
             }
           ></Route>
+          <Route path="/player/:id" element={<Player></Player>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

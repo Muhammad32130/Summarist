@@ -2,11 +2,11 @@ import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { AiFillPlayCircle } from 'react-icons/ai'
 import Books from '../Components/Books'
+import { Link } from 'react-router-dom'
 
 function ForYou({user, audioRef, selected ,setselected,calculateAudio,setsuggested, Suggested }) {
 const [recommended, setrecommended] = useState(null)
 
-console.log('for-you')
 
   function getselected(){
 
@@ -52,8 +52,8 @@ setsuggested(res.data.slice(0, 5))
     }
   },[timeDisplay])
 
-
   function calculateAudio(){  
+    const duration = document.querySelectorAll('.selected__book--duration')
     let audioTime = null
       const time = audioRef?.current?.duration
       const minutes = Math.floor(time / 60);
@@ -65,22 +65,23 @@ setsuggested(res.data.slice(0, 5))
       } else if(selected) {
         audioTime = `${minutes} mins ${remainingSeconds} secs`
       }
-     const newobj = {...selected, audioTime: audioTime}
-      setselected(newobj)
+
+        duration[0].innerHTML=audioTime
+    
   }
   
   useEffect(()=>{
     getselected()
     getSuggested()
     getrecommended()
-  },[])
+  },[window.location.pathname])
 
   return (
     <div className='for-you__wrapper'>
       <div className='for-you__title'>
       Selected just for you
       </div>
-      <a href="" className="selected__book">
+      <Link to={`/book/${selected?.id}`} className="selected__book">
         <div className="selected__book--sub-title">
           {selected?.subTitle}
         </div>
@@ -99,7 +100,7 @@ setsuggested(res.data.slice(0, 5))
           </div>
         </div>
         <audio onLoadedMetadata={()=>{calculateAudio()}} ref={audioRef} src={selected?.audioLink}></audio>
-      </a>
+      </Link>
       <div>
       <div className='for-you__title'>Recommended For You</div>
     <div className="for-you__sub--title">We think you'll like these</div>
