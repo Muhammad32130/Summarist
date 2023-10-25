@@ -1,10 +1,36 @@
 import { AiOutlineStar } from "react-icons/ai";
 import { BiTimeFive } from "react-icons/bi";
 import { Link, useParams } from "react-router-dom";
+import {useEffect, useState} from 'react'
 
 
-function Books({ recommended, type ,setrecommended, formatTime }) {
+function Books({ recommended, type ,setrecommended }) {
+  const [audiotime, setaudiotime] = useState([]);
+  const timeDisplay = document.querySelectorAll('.recommended')
+  const suggestedTime = document.querySelectorAll('.suggested')
 
+  const formatTime = (time, index) => {
+    if ( time !== undefined && audiotime.length !== 10) {
+      const minutes = Math.floor(time / 60);
+      const formatMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+      const seconds = Math.floor(time % 60);
+      const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+      setaudiotime((prevAudiotime) => [
+        ...prevAudiotime,
+        `${formatMinutes}:${formatSeconds}`
+      ])
+    }
+    
+    
+  };
+  useEffect(()=>{
+    for (let i = 0; i <timeDisplay.length; i++) {
+        timeDisplay[i].innerHTML = audiotime[i]
+    }
+    for (let i = 0; i <suggestedTime.length; i++) {
+        suggestedTime[i].innerHTML = audiotime[i+5]
+    }
+  },[timeDisplay])
 
 
 
@@ -29,7 +55,7 @@ function Books({ recommended, type ,setrecommended, formatTime }) {
                 }}
                 src={book.audioLink}
               ></audio> 
-              <figure className="book__image--wrapper">
+              <figure style={{ width: "172px", height: "172px", marginBottom:"8px"}} className="book__image--wrapper">
                 <img src={book.imageLink} alt="" className="book__image" />
               </figure>
               <div className="recommended__book--title">{book.title}</div>

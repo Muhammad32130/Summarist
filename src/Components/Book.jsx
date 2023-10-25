@@ -5,18 +5,22 @@ import Search from "./Search";
 import axios from "axios";
 import { AiOutlineStar } from "react-icons/ai";
 import { BiTimeFive } from "react-icons/bi";
-import { BsMic } from "react-icons/bs";
+import { BsFillBookmarkFill, BsMic } from "react-icons/bs";
 import {TbBulb} from 'react-icons/tb'
 import {PiBookOpenTextBold} from 'react-icons/pi'
 import {BsBookmark} from 'react-icons/bs'
 import { Link } from "react-router-dom";
+import { arrayRemove, arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "../Firebase";
+import Modal from "./Modal";
 
-function Book({ setmodal,user, signout }) {
+function Book({ modal,data, savebook, setsavebook, setmodal , signout,guestLogin,user, Signupuser,Loginuser, signup , setsignup }) {
   const { id } = useParams();
   const [audiotime, setaudiotime] = useState(null);
-  const [play, setplay] = useState(false);
+  const [booksave, setbooksave] = useState(false);
   const audioRef = useRef()
     const [book, setbook] =useState(null)
+
 
     function calculateAudio() {
         let audioTime = null;
@@ -42,12 +46,39 @@ function Book({ setmodal,user, signout }) {
         })
     }
 useEffect(()=>{
-getbook()
+  getbook()
+  if(data?.SavedBooks?.includes(id)){
+    setbooksave(true)
+  }
+  else{
+    setbooksave(false)
+  }
 },[])
+
+
+
+
+  async function BookMarkbook(){
+    const docref = doc(db, "users", user?.uid)
+   
+    await updateDoc(docref,{
+      SavedBooks:arrayUnion(book.id)
+    })
+    if(savebook===false){
+      await updateDoc(docref,{
+        SavedBooks:arrayRemove(book.id)
+      })
+    }
+    setsavebook(!savebook)
+    setbooksave(!booksave)
+  }
+console.log(data)
+console.log(book)
 
 
   return (
     <div className="wrapper">
+      {modal && <Modal guestLogin={guestLogin} user={user} Signupuser={Signupuser} Loginuser={Loginuser} signup={signup} setmodal={setmodal} setsignup={setsignup} ></Modal>}
       <Sidebar setmodal={setmodal} user={user} signout={signout}></Sidebar>
       <Search></Search>
       {book && 
@@ -81,21 +112,35 @@ getbook()
                 </div>
               </div>
               <div className="inner-book__read--btn-wrapper">
-                <Link to={`/player/${book.id}`}>
+                {user ?<Link to={data?.Substat === 'Basic'&&book?.subscriptionRequired ?(`/choose-plan`):(`/player/${book.id}`)}>
                 <button className="inner-book__read--btn">
                   <div className="inner-book__read--icon"><PiBookOpenTextBold></PiBookOpenTextBold></div>
                   <div className="inner-book__read--text">Read</div>
                 </button>
-                </Link>
+                </Link>:
+                <button onClick={()=>{setmodal(true)}} className="inner-book__read--btn">
+                <div className="inner-book__read--icon"><PiBookOpenTextBold></PiBookOpenTextBold></div>
+                <div className="inner-book__read--text">Read</div>
+              </button>
+                }
+                {user ?
+                <Link to={`/player/${book.id}`}>
                 <button className="inner-book__read--btn">
                   <div className="inner-book__read--icon"><BsMic></BsMic></div>
                   <div className="inner-book__read--text">Listen</div>
                 </button>
+                </Link>
+              : 
+              <button onClick={()=>{setmodal(true)}} className="inner-book__read--btn">
+                  <div className="inner-book__read--icon"><BsMic></BsMic></div>
+                  <div className="inner-book__read--text">Listen</div>
+                </button>
+              }
               </div>
-              <div className="inner-book__bookmark">
-                <div className="inner-book__bookmark--icon"><BsBookmark></BsBookmark></div>
+              <div onClick={()=>{BookMarkbook()}} className="inner-book__bookmark">
+                <div className="inner-book__bookmark--icon">{booksave?<BsFillBookmarkFill></BsFillBookmarkFill>:<BsBookmark></BsBookmark>}</div>
                 <div className="inner-book__bookmark--text">
-                  Add title to My Library
+                  {booksave?"Saved in My Library":"Add title to My Library"}
                 </div>
               </div>
               <div className="inner-book__secondary--title">

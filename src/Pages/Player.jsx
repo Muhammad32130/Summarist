@@ -7,7 +7,7 @@ import axios from "axios";
 import { useCallback } from "react";
 import { useEffect, useState, useRef } from "react";
 
-function Player() {
+function Player({setmodal, user, signout}) {
   const playeraudio = useRef();
   const progressRef = useRef();
   const [textsize, setsize] = useState('22');
@@ -79,7 +79,7 @@ function Player() {
 
   return (
     <div className="wrapper">
-      <Sidebar textsize={textsize} setsize={setsize} id={id}></Sidebar>
+      <Sidebar setmodal={setmodal} user={user} signout={signout} textsize={textsize} setsize={setsize} id={id}></Sidebar>
       <Search></Search>
       <div className="summary">
         <audio ref={playeraudio} src={book?.audioLink}></audio>

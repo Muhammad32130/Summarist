@@ -1,10 +1,40 @@
+import axios from "axios";
+import Books from "../Components/Books";
 import Login from "../Components/Login";
 import Modal from "../Components/Modal";
 import Search from "../Components/Search";
 import Sidebar from "../Components/Sidebar";
+import {useState, useEffect} from 'react'
 
-function Library({ user,guestLogin, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal }) {
-  console.log(modal);
+function Library({ user,data,guestLogin, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal }) {
+
+const [savedbooks, setbooks] = useState([])
+async function getBooks() {
+  const bookPromises = data?.SavedBooks.map((element) =>
+    axios.get(`https://us-central1-summaristt.cloudfunctions.net/getBook?id=${element}`)
+  );
+
+  try {
+    const responses = await Promise.all(bookPromises);
+    const bookData = responses.map((res) => res.data);
+    setbooks([...savedbooks, ...bookData]);
+  } catch (error) {
+    // Handle errors here
+  }
+}
+
+console.log(savedbooks)
+ if(savedbooks.length !== data?.SavedBooks.length){
+
+   getBooks()
+   
+  }
+ 
+
+
+
+
+
   return (
     <>
       <Sidebar
@@ -26,10 +56,11 @@ function Library({ user,guestLogin, signup,Signupuser,Loginuser, setsignup, sign
       )}
       {user ? (
         <>
-          <div className="row">
+           <div className="row">
             <div className="container">
               <div className="for-you__title">Saved Books</div>
-              <div className="for-you__sub--title">0 items</div>
+              <div className="for-you__sub--title">{savedbooks.length} items</div>
+            {data?.SavedBooks.length < 1 ?
               <div className="finished__books--block-wrapper">
                 <div className="finished__books--title">
                   Save your favorite books!
@@ -38,6 +69,9 @@ function Library({ user,guestLogin, signup,Signupuser,Loginuser, setsignup, sign
                   When you save a book, it will appear here.
                 </div>
               </div>
+              : 
+              <Books recommended={savedbooks}></Books>
+                }
               <div className="for-you__title">Finished</div>
               <div className="for-you__sub--title">0 items</div>
               <div className="finished__books--block-wrapper">
@@ -48,6 +82,7 @@ function Library({ user,guestLogin, signup,Signupuser,Loginuser, setsignup, sign
                   When you save a book, it will appear here.
                 </div>
               </div>
+           
             </div>
           </div>
         </>

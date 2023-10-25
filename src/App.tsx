@@ -16,6 +16,8 @@ import Book from "./Components/Book";
 import Library from "./Pages/Library";
 import Settings from "./Pages/Settings";
 import Player from "./Pages/Player";
+import Modal from "./Components/Modal";
+import ChoosePlan from "./Pages/ChoosePlan";
 
 function App() {
   const [User, setuser] = useState<User | null>(null);
@@ -24,6 +26,7 @@ function App() {
   const [signup, setsignup] = useState<boolean>(false);
   const [Suggested, setsuggested] = useState(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [savebook, setsavebook] = useState(false);
   const [selected, setselected] = useState<any>(null);
 
   function Signupuser(e: any) {
@@ -37,6 +40,7 @@ function App() {
       }, 500);
       setDoc(doc(db, "users", user.user.uid), {
         Substat: "Basic",
+        SavedBooks:[],
       }).then(() => {});
     });
   }
@@ -60,7 +64,7 @@ function App() {
 
   useEffect(() => {
     getsubstat();
-  }, [User]);
+  }, [User && savebook]);
   async function getsubstat() {
     if (User) {
       const docRef = doc(db, "users", User.uid);
@@ -153,6 +157,7 @@ function App() {
             path="/Library"
             element={
               <Library
+                data={data}
                 signout={signout}
                 signup={signup}
                 setsignup={setsignup}
@@ -185,10 +190,24 @@ function App() {
           <Route
             path="/book/:id"
             element={
-              <Book setmodal={setmodal} user={User} signout={signout}></Book>
+              <Book
+              modal={modal}
+                guestLogin={guestLogin}
+                Signupuser={Signupuser}
+                Loginuser={Loginuser}
+                signup={signup}
+                setmodal={setmodal}
+                setsignup={setsignup}
+                data={data}
+                setsavebook={setsavebook}
+                savebook={savebook}
+                user={User}
+                signout={signout}
+              ></Book>
             }
           ></Route>
-          <Route path="/player/:id" element={<Player></Player>}></Route>
+          <Route path="/choose-plan" element={<ChoosePlan></ChoosePlan>}></Route>
+          <Route path="/player/:id" element={<Player setmodal={setmodal} user={User} signout={signout}></Player>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

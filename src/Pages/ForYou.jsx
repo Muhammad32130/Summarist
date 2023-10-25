@@ -25,32 +25,7 @@ setsuggested(res.data.slice(0, 5))
     })
   }
   
-  const [audiotime, setaudiotime] = useState([]);
-  const timeDisplay = document.querySelectorAll('.recommended')
-  const suggestedTime = document.querySelectorAll('.suggested')
 
-  const formatTime = (time, index) => {
-    if ( time !== undefined && audiotime.length !== 10) {
-      const minutes = Math.floor(time / 60);
-      const formatMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-      const seconds = Math.floor(time % 60);
-      const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-      setaudiotime((prevAudiotime) => [
-        ...prevAudiotime,
-        `${formatMinutes}:${formatSeconds}`
-      ])
-    }
-    
-    
-  };
-  useEffect(()=>{
-    for (let i = 0; i <timeDisplay.length; i++) {
-        timeDisplay[i].innerHTML = audiotime[i]
-    }
-    for (let i = 0; i <suggestedTime.length; i++) {
-        suggestedTime[i].innerHTML = audiotime[i+5]
-    }
-  },[timeDisplay])
 
   function calculateAudio(){  
     const duration = document.querySelectorAll('.selected__book--duration')
@@ -87,7 +62,7 @@ setsuggested(res.data.slice(0, 5))
         </div>
         <div className="selected__book--line"></div>
         <div className="selected__book--content">
-          <figure className="book__image--wrapper">
+          <figure style={{height: "140px", width: "140px", minWidth: "140px"}} className="book__image--wrapper">
             <img src={selected?.imageLink} alt="" className="book__image" />
           </figure>
           <div className="selected__book--text">
@@ -104,12 +79,12 @@ setsuggested(res.data.slice(0, 5))
       <div>
       <div className='for-you__title'>Recommended For You</div>
     <div className="for-you__sub--title">We think you'll like these</div>
-    <Books formatTime={formatTime}  type={'recommended'} setrecommended={setrecommended} recommended={recommended}></Books>
+    <Books  type={'recommended'} setrecommended={setrecommended} recommended={recommended}></Books>
       </div>
       <div>
       <div className='for-you__title'>Suggested Books</div>
     <div className="for-you__sub--title">Browse those books</div>
-      <Books formatTime={formatTime} type={'suggested'} setrecommended={setsuggested} recommended={Suggested}></Books>
+      <Books type={'suggested'} setrecommended={setsuggested} recommended={Suggested}></Books>
       </div>
     </div>
   )
