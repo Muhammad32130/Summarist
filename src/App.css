@@ -1542,3 +1542,24 @@ overflow-x:hidden;
   height: 1px;
   background: #bac8ce;
 }
+.plan__card--circle {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.plan__card--dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: #000;
+  border-radius: 50%;
+}
+
+.plan__card--active {
+  border: 4px solid #2be080;
+}

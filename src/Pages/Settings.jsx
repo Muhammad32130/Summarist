@@ -3,7 +3,7 @@ import Modal from '../Components/Modal'
 import Search from '../Components/Search'
 import Sidebar from '../Components/Sidebar'
 
-function Settings({user,guestLogin,data, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal}) {
+function Settings({user,premium,guestLogin, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal}) {
   return (
     <>
       <Sidebar setmodal={setmodal} user={user} signout={signout} ></Sidebar>
@@ -25,7 +25,7 @@ function Settings({user,guestLogin,data, signup,Signupuser,Loginuser, setsignup,
 <>
   <div className="setting__content">
     <div className="settings__sub--title">Your Subscription plan</div>
-    <div className="settings__text">{data?.Substat}</div>
+    <div className="settings__text">{premium?"Premium": "Basic"}</div>
   </div>
   <div className="setting__content">
     <div className="settings__sub--title">Email</div>

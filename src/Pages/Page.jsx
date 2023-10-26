@@ -9,10 +9,10 @@ import Modal from '../Components/Modal'
 import Book from '../Components/Book'
 
 
-function Page({modal,data,audioRef,selected,setselected,calculateAudio,setsuggested,Suggested, signup, setsignup, setmodal, guestLogin, signout ,Signupuser, Loginuser, user}) {
+function Page({modal,audioRef,selected,setselected,calculateAudio,setsuggested,Suggested, signup, setsignup, setmodal, guestLogin, signout ,Signupuser, Loginuser, user}) {
 const location = useLocation()
 const {id} = useParams()
-console.log(id)
+
   return (
     <div className='foru-main'>
       <div className="wrapper">

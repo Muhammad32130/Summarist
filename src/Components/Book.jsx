@@ -14,7 +14,7 @@ import { arrayRemove, arrayUnion, doc, setDoc, updateDoc } from "firebase/firest
 import { db } from "../Firebase";
 import Modal from "./Modal";
 
-function Book({ modal,data, savebook, setsavebook, setmodal , signout,guestLogin,user, Signupuser,Loginuser, signup , setsignup }) {
+function Book({ modal,data,premium, savebook, setsavebook, setmodal , signout,guestLogin,user, Signupuser,Loginuser, signup , setsignup }) {
   const { id } = useParams();
   const [audiotime, setaudiotime] = useState(null);
   const [booksave, setbooksave] = useState(false);
@@ -39,7 +39,6 @@ function Book({ modal,data, savebook, setsavebook, setmodal , signout,guestLogin
         }
       }
 
-
     function getbook(){
         axios.get(`https://us-central1-summaristt.cloudfunctions.net/getBook?id=${id}`).then((res)=>{
         setbook(res.data)
@@ -58,22 +57,20 @@ useEffect(()=>{
 
 
 
-  async function BookMarkbook(){
+   function BookMarkbook(){
     const docref = doc(db, "users", user?.uid)
    
-    await updateDoc(docref,{
+     updateDoc(docref,{
       SavedBooks:arrayUnion(book.id)
     })
-    if(savebook===false){
-      await updateDoc(docref,{
+    if(data?.SavedBooks.includes(book.id)){
+       updateDoc(docref,{
         SavedBooks:arrayRemove(book.id)
       })
     }
     setsavebook(!savebook)
     setbooksave(!booksave)
   }
-console.log(data)
-console.log(book)
 
 
   return (
@@ -112,7 +109,7 @@ console.log(book)
                 </div>
               </div>
               <div className="inner-book__read--btn-wrapper">
-                {user ?<Link to={data?.Substat === 'Basic'&&book?.subscriptionRequired ?(`/choose-plan`):(`/player/${book.id}`)}>
+                {user ?<Link to={premium=== false&&book?.subscriptionRequired ?(`/choose-plan`):(`/player/${book.id}`)}>
                 <button className="inner-book__read--btn">
                   <div className="inner-book__read--icon"><PiBookOpenTextBold></PiBookOpenTextBold></div>
                   <div className="inner-book__read--text">Read</div>
@@ -124,7 +121,7 @@ console.log(book)
               </button>
                 }
                 {user ?
-                <Link to={`/player/${book.id}`}>
+                <Link to={premium=== false&&book?.subscriptionRequired ?(`/choose-plan`):(`/player/${book.id}`)}>
                 <button className="inner-book__read--btn">
                   <div className="inner-book__read--icon"><BsMic></BsMic></div>
                   <div className="inner-book__read--text">Listen</div>
@@ -137,7 +134,7 @@ console.log(book)
                 </button>
               }
               </div>
-              <div onClick={()=>{BookMarkbook()}} className="inner-book__bookmark">
+              <div onClick={()=>{BookMarkbook() && setbooksave(true)}} className="inner-book__bookmark">
                 <div className="inner-book__bookmark--icon">{booksave?<BsFillBookmarkFill></BsFillBookmarkFill>:<BsBookmark></BsBookmark>}</div>
                 <div className="inner-book__bookmark--text">
                   {booksave?"Saved in My Library":"Add title to My Library"}

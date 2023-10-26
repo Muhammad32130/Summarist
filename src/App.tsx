@@ -9,7 +9,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { auth, db } from "./Firebase";
+import { app, auth, db } from "./Firebase";
 import { User } from "firebase/auth";
 import { DocumentData, doc, getDoc, setDoc } from "firebase/firestore";
 import Book from "./Components/Book";
@@ -18,6 +18,7 @@ import Settings from "./Pages/Settings";
 import Player from "./Pages/Player";
 import Modal from "./Components/Modal";
 import ChoosePlan from "./Pages/ChoosePlan";
+import { getPremiumStatus } from "./substat";
 
 function App() {
   const [User, setuser] = useState<User | null>(null);
@@ -28,6 +29,22 @@ function App() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [savebook, setsavebook] = useState(false);
   const [selected, setselected] = useState<any>(null);
+  const [premium, setpremium] = useState(false);
+
+  if (User && window.location.pathname === "/") {
+    window.location.pathname = "/for-you";
+  }
+
+  useEffect(() => {
+    const getPremium = async () => {
+      const premiumStat = auth.currentUser
+        ? await getPremiumStatus(app)
+        : false;
+      setpremium(premiumStat);
+    };
+    getPremium();
+  }, [app, auth.currentUser?.uid]);
+
 
   function Signupuser(e: any) {
     e.preventDefault();
@@ -40,7 +57,7 @@ function App() {
       }, 500);
       setDoc(doc(db, "users", user.user.uid), {
         Substat: "Basic",
-        SavedBooks:[],
+        SavedBooks: [],
       }).then(() => {});
     });
   }
@@ -64,7 +81,7 @@ function App() {
 
   useEffect(() => {
     getsubstat();
-  }, [User && savebook]);
+  }, [User, savebook]);
   async function getsubstat() {
     if (User) {
       const docRef = doc(db, "users", User.uid);
@@ -109,7 +126,6 @@ function App() {
       }
     });
   }, []);
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -140,7 +156,6 @@ function App() {
                 calculateAudio={calculateAudio}
                 setsuggested={setsuggested}
                 Suggested={Suggested}
-                data={data}
                 signup={signup}
                 setsignup={setsignup}
                 user={User}
@@ -174,6 +189,7 @@ function App() {
             path="/Settings"
             element={
               <Settings
+                premium={premium}
                 signout={signout}
                 signup={signup}
                 setsignup={setsignup}
@@ -182,7 +198,6 @@ function App() {
                 Signupuser={Signupuser}
                 Loginuser={Loginuser}
                 modal={modal}
-                data={data}
                 setmodal={setmodal}
               ></Settings>
             }
@@ -191,7 +206,7 @@ function App() {
             path="/book/:id"
             element={
               <Book
-              modal={modal}
+                modal={modal}
                 guestLogin={guestLogin}
                 Signupuser={Signupuser}
                 Loginuser={Loginuser}
@@ -199,6 +214,7 @@ function App() {
                 setmodal={setmodal}
                 setsignup={setsignup}
                 data={data}
+                premium={premium}
                 setsavebook={setsavebook}
                 savebook={savebook}
                 user={User}
@@ -206,8 +222,20 @@ function App() {
               ></Book>
             }
           ></Route>
-          <Route path="/choose-plan" element={<ChoosePlan></ChoosePlan>}></Route>
-          <Route path="/player/:id" element={<Player setmodal={setmodal} user={User} signout={signout}></Player>}></Route>
+          <Route
+            path="/choose-plan"
+            element={<ChoosePlan user={User}></ChoosePlan>}
+          ></Route>
+          <Route
+            path="/player/:id"
+            element={
+              <Player
+                setmodal={setmodal}
+                user={User}
+                signout={signout}
+              ></Player>
+            }
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>

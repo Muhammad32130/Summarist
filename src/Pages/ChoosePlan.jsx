@@ -1,7 +1,29 @@
-import React from "react";
 import pricing from '../images/pricing-top.png'
+import {useState} from 'react'
+import { getCheckoutUrl } from "../Stripe";
+import { app, db } from "../Firebase";
 
-function ChoosePlan() {
+
+
+function ChoosePlan({user}) {
+  const [plan, setplan] = useState('Yearly')
+  async function checkout(){
+    let priceId = null
+    if(plan === "Yearly"){
+      priceId = 'price_1O5JOQBJ6haLOo7PQmSKlrTp'
+      const checkoutUrl = await getCheckoutUrl(app, priceId)
+      window.location = checkoutUrl
+    }
+    else if(plan==="Monthly"){
+      priceId = 'price_1O5JO8BJ6haLOo7PbM932ELv'
+      const checkoutUrl = await getCheckoutUrl(app, priceId)
+      window.location = checkoutUrl
+    }
+  }
+
+
+
+
   return (
     <div className="wrapper wrapper__full">
       <div className="plan">
@@ -80,9 +102,9 @@ function ChoosePlan() {
               </div>
             </div>
             <div className="section__title">Choose the plan that fits you</div>
-            <div className="plan__card">
+            <div onClick={()=>{setplan("Yearly")}} className={`plan__card ${plan === "Yearly" && "plan__card--active"}`}>
               <div class="plan__card--circle" bis_skin_checked="1">
-                <div class="plan__card--dot" bis_skin_checked="1"></div>
+                {plan ==="Yearly" &&<div class="plan__card--dot" bis_skin_checked="1"></div>}
               </div>
               <div class="plan__card--content" bis_skin_checked="1">
                 <div class="plan__card--title" bis_skin_checked="1">
@@ -99,8 +121,10 @@ function ChoosePlan() {
             <div className="plan__card--separator">
               <div className="plan__separator">or</div>
             </div>
-            <div className="plan__card">
-              <div class="plan__card--circle" bis_skin_checked="1"></div>
+            <div onClick={()=>{setplan("Monthly")}} className={`plan__card ${plan === "Monthly" && "plan__card--active"}`}>
+              <div class="plan__card--circle" bis_skin_checked="1">
+              {plan ==="Monthly" &&<div class="plan__card--dot" bis_skin_checked="1"></div>}
+              </div>
               <div class="plan__card--content" bis_skin_checked="1">
                 <div class="plan__card--title" bis_skin_checked="1">
                   Premium Monthly
@@ -115,7 +139,7 @@ function ChoosePlan() {
             </div>
             <div className="plan__card--cta">
               <span class="btn--wrapper">
-                <button class="btn" style={{ width: "300px" }}>
+                <button onClick={()=>{checkout()}} class="btn" style={{ width: "300px" }}>
                   <span>Start your free 7-day trial</span>
                 </button>
               </span>

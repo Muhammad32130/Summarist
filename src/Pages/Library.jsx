@@ -9,6 +9,7 @@ import {useState, useEffect} from 'react'
 function Library({ user,data,guestLogin, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal }) {
 
 const [savedbooks, setbooks] = useState([])
+
 async function getBooks() {
   const bookPromises = data?.SavedBooks.map((element) =>
     axios.get(`https://us-central1-summaristt.cloudfunctions.net/getBook?id=${element}`)
@@ -23,7 +24,6 @@ async function getBooks() {
   }
 }
 
-console.log(savedbooks)
  if(savedbooks.length !== data?.SavedBooks.length){
 
    getBooks()

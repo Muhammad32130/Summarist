@@ -6,16 +6,11 @@ import { RiLeafLine } from "react-icons/ri";
 import landing from '../images/landing.png'
 import logo from '../images/logo.png'
 import Modal from "../Components/Modal";
-import { useNavigate } from "react-router";
+
 
 
 function Home({ modal, signup, setsignup ,setmodal, guestLogin, Signupuser, Loginuser, user}) {
- const navigate = useNavigate()
-  useEffect(()=>{
-    if(user&&window.location.pathname==='/'){
-      navigate('/for-you')
-    }
-  },[window.location])
+ 
 
 
   
