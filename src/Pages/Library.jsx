@@ -8,33 +8,45 @@ import {useState, useEffect} from 'react'
 
 function Library({ user,data,guestLogin, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal }) {
 
-const [savedbooks, setbooks] = useState([])
+const [savedbooks, setbooks] = useState([]);
+const [finsihedBooks, setfinished] = useState([]);
 
-async function getBooks() {
-  const bookPromises = data?.SavedBooks.map((element) =>
+console.log(data)
+async function getBooks(data, setsave) {
+
+
+  const bookPromises = data.map((element) =>
     axios.get(`https://us-central1-summaristt.cloudfunctions.net/getBook?id=${element}`)
   );
 
   try {
     const responses = await Promise.all(bookPromises);
     const bookData = responses.map((res) => res.data);
-    setbooks([...savedbooks, ...bookData]);
+    return bookData;
   } catch (error) {
     // Handle errors here
+    return [];
   }
 }
+console.log(user)
 
- if(savedbooks.length !== data?.SavedBooks.length){
-
-   getBooks()
-   
+async function fetchData() {
+  if (data.SavedBooks && savedbooks.length !== data?.SavedBooks.length) {
+    const savedBooksData = await getBooks(data?.SavedBooks, setbooks);
+    setbooks([...savedbooks, ...savedBooksData]);
   }
- 
 
+  if (data.FinsihedBooks && finsihedBooks.length !== data?.FinsihedBooks.length) {
+    const finishedBooksData = await getBooks(data?.FinsihedBooks, setfinished);
+    setfinished([...finsihedBooks, ...finishedBooksData]);
+  }
+}
+if(data){
 
-
-
-
+  fetchData();
+  
+}
+  
   return (
     <>
       <Sidebar
@@ -60,7 +72,7 @@ async function getBooks() {
             <div className="container">
               <div className="for-you__title">Saved Books</div>
               <div className="for-you__sub--title">{savedbooks.length} items</div>
-            {data?.SavedBooks.length < 1 ?
+            {data?.SavedBooks.length < 1 ||data?.SavedBooks?.length === undefined ?
               <div className="finished__books--block-wrapper">
                 <div className="finished__books--title">
                   Save your favorite books!
@@ -73,7 +85,8 @@ async function getBooks() {
               <Books recommended={savedbooks}></Books>
                 }
               <div className="for-you__title">Finished</div>
-              <div className="for-you__sub--title">0 items</div>
+              <div className="for-you__sub--title">{finsihedBooks.length} items</div>
+             {data?.FinsihedBooks?.length < 1 ||data?.FinsihedBooks?.length === undefined  ?
               <div className="finished__books--block-wrapper">
                 <div className="finished__books--title">
                   Save your favorite books!
@@ -82,6 +95,9 @@ async function getBooks() {
                   When you save a book, it will appear here.
                 </div>
               </div>
+            :
+            <Books recommended={finsihedBooks}></Books>  
+            }
            
             </div>
           </div>

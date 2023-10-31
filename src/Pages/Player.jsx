@@ -6,8 +6,11 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { useCallback } from "react";
 import { useEffect, useState, useRef } from "react";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { db } from "../Firebase";
+import {IoIosPause} from 'react-icons/io'
 
-function Player({setmodal, user, signout}) {
+function Player({setmodal,finished, setfinished, user, signout}) {
   const playeraudio = useRef();
   const progressRef = useRef();
   const [textsize, setsize] = useState('22');
@@ -15,6 +18,8 @@ function Player({setmodal, user, signout}) {
   const [currentTime, setCurrentTime] = useState("00:00");
   const [book, setbook] = useState();
   const { id } = useParams();
+console.log(user)
+
   function getbook() {
     axios
       .get(`https://us-central1-summaristt.cloudfunctions.net/getBook?id=${id}`)
@@ -35,8 +40,7 @@ function Player({setmodal, user, signout}) {
       }
     }
   };
-  console.log(textsize)
-
+ 
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (playeraudio.current) {
@@ -46,7 +50,12 @@ function Player({setmodal, user, signout}) {
         const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
         setCurrentTime(`${formatMinutes}:${formatSeconds}`);
       }
+  
+      if(playeraudio?.current?.ended){
+        setplay(false)
+      }
     }, 0);
+  
 
     return () => {
       clearInterval(intervalId);
@@ -76,6 +85,24 @@ function Player({setmodal, user, signout}) {
   function handleTimeChange(e) {
     playeraudio.current.currentTime = progressRef.current.value;
   }
+ function finsihedBook(){
+  if(user && book){
+    const docref = doc(db, "users", user?.uid)
+    
+    updateDoc(docref,{
+      FinsihedBooks:arrayUnion(book.id)
+    })
+    console.log("added")
+  }
+}
+ 
+useEffect(()=>{
+  finsihedBook()
+},[playeraudio?.current?.ended=== true])
+  
+ 
+
+ 
 
   return (
     <div className="wrapper">
@@ -130,7 +157,7 @@ function Player({setmodal, user, signout}) {
                 }}
                 className="audio__controls--btn audio__controls--btn-play"
               >
-                <BsPlayFill></BsPlayFill>
+                {play? <IoIosPause></IoIosPause>:<BsPlayFill></BsPlayFill>}
               </button>
               <button
                 onClick={() => {

@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 import { app, auth, db } from "./Firebase";
 import { User } from "firebase/auth";
-import { DocumentData, doc, getDoc, setDoc } from "firebase/firestore";
+import { DocumentData, doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import Book from "./Components/Book";
 import Library from "./Pages/Library";
 import Settings from "./Pages/Settings";
@@ -28,24 +28,25 @@ function App() {
   const [Suggested, setsuggested] = useState(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [savebook, setsavebook] = useState(false);
+  const [finsihed, setfinished] = useState([])
   const [selected, setselected] = useState<any>(null);
   const [premium, setpremium] = useState(false);
 
   if (User && window.location.pathname === "/") {
     window.location.pathname = "/for-you";
   }
-
+  
   useEffect(() => {
     const getPremium = async () => {
       const premiumStat = auth.currentUser
-        ? await getPremiumStatus(app)
-        : false;
+      ? await getPremiumStatus(app)
+      : false;
       setpremium(premiumStat);
     };
     getPremium();
   }, [app, auth.currentUser?.uid]);
-
-
+  
+  
   function Signupuser(e: any) {
     e.preventDefault();
     const email = e.target[0].value;
@@ -56,7 +57,6 @@ function App() {
         setmodal(false);
       }, 500);
       setDoc(doc(db, "users", user.user.uid), {
-        Substat: "Basic",
         SavedBooks: [],
       }).then(() => {});
     });
@@ -78,32 +78,34 @@ function App() {
       setselected(newobj);
     }
   }
-
-  useEffect(() => {
-    getsubstat();
-  }, [User, savebook]);
+  
   async function getsubstat() {
-    if (User) {
-      const docRef = doc(db, "users", User.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setdata(docSnap.data());
-      }
-    }
-  }
-
-  function guestLogin() {
-    signInWithEmailAndPassword(auth, "guest@gmail.com", "guest123").then(
-      (user: any) => {
-        setuser(user.user);
-        setTimeout(() => {
-          setmodal(false);
-        }, 500);
-      }
-    );
-  }
-
-  function Loginuser(e: any) {
+      if (User) {
+          const docRef = doc(db, "users", User.uid);
+          const docSnap =  onSnapshot(docRef,(docSnap)=>{
+        
+              if (docSnap.exists()) {
+                  setdata(docSnap.data());
+                }
+              });
+              return docSnap
+              }
+            }
+          useEffect(() => {
+              getsubstat();
+            }, [User]);
+            function guestLogin() {
+              signInWithEmailAndPassword(auth, "guest@gmail.com", "guest123").then(
+                (user: any) => {
+                  setuser(user.user);
+                  setTimeout(() => {
+                    setmodal(false);
+                  }, 500);
+                }
+                );
+              }
+              
+              function Loginuser(e: any) {
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
@@ -230,6 +232,8 @@ function App() {
             path="/player/:id"
             element={
               <Player
+              finished = {finsihed}
+              setfinished={setfinished}
                 setmodal={setmodal}
                 user={User}
                 signout={signout}
