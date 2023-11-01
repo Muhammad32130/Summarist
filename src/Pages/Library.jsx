@@ -11,8 +11,7 @@ function Library({ user,data,guestLogin, signup,Signupuser,Loginuser, setsignup,
 const [savedbooks, setbooks] = useState([]);
 const [finsihedBooks, setfinished] = useState([]);
 
-console.log(data)
-async function getBooks(data, setsave) {
+async function getBooks(data) {
 
 
   const bookPromises = data.map((element) =>
@@ -28,7 +27,6 @@ async function getBooks(data, setsave) {
     return [];
   }
 }
-console.log(user)
 
 async function fetchData() {
   if (data.SavedBooks && savedbooks.length !== data?.SavedBooks.length) {

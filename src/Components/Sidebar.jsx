@@ -41,16 +41,16 @@ function Sidebar({user,textsize, setsize, signout, setmodal, modal,id}) {
             <BsBookmark className="li-ico"></BsBookmark>
             My Library
           </NavLink>
-          <Link className="s-li" href="">
+          <div className="s-li sidebar__link--not-allowed" >
             <div className="sidebar-active"></div>
             <RiBallPenLine className="li-ico"></RiBallPenLine>
             Highlights
-          </Link>
-          <Link className="s-li" href="">
+          </div>
+          <div className="s-li sidebar__link--not-allowed" >
             <div className="sidebar-active"></div>
             <AiOutlineSearch className="li-ico"></AiOutlineSearch>
             Search
-          </Link>
+          </div>
           {id && 
           <div  className="sidebar__link--wrapper sidebar__font--size-wrapper">
             <div onClick={()=>{setsize('16')}} className={`sidebar__link--text sidebar__font--size-icon ${textsize==='16' && 'sidebar__font--size-icon--active'}`}>
@@ -77,11 +77,11 @@ function Sidebar({user,textsize, setsize, signout, setmodal, modal,id}) {
             <AiOutlineSetting className="li-ico"></AiOutlineSetting>
             Settings
           </NavLink>
-          <Link className="s-li" href="">
+          <div className="s-li sidebar__link--not-allowed" href="">
             <div className="sidebar-active"></div>
             <BiHelpCircle className="li-ico"></BiHelpCircle>
             Help & Support
-          </Link>
+          </div>
 
           {user ? <Link onClick={()=>{signout()}} className="s-li" href="">
             <div className="sidebar-active"></div>

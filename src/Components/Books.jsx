@@ -2,6 +2,7 @@ import { AiOutlineStar } from "react-icons/ai";
 import { BiTimeFive } from "react-icons/bi";
 import { Link, useParams } from "react-router-dom";
 import {useEffect, useState, useRef} from 'react'
+import Skeleton from "./Skeleton";
 
 
 
@@ -28,7 +29,15 @@ function Books({ recommended, type ,setrecommended }) {
   return `${formattedMinutes}:${formattedSeconds}`;
  }
 
-
+ const SkeletonBooks = Array.from({ length: 5 }, (_, index) => (
+  <div className='for-you__recommended--books-link'>
+    <Skeleton width={172} marginbottom={5} height={190} />
+    <Skeleton width={150} marginbottom={5} margintop={5} height={25} />
+    <Skeleton width={100} marginbottom={5} height={18} />
+    <Skeleton width={172} height={40} marginbottom={5} />
+    <Skeleton width={91} height={17} />
+  </div>
+));
 
 
 
@@ -36,7 +45,7 @@ function Books({ recommended, type ,setrecommended }) {
   
   return (
     <div className="for-you__recommended--books">
-      {recommended &&
+      {recommended ?
         recommended?.map((book, index) => {
           const duration = audioDurations[book.id]
        
@@ -77,7 +86,16 @@ function Books({ recommended, type ,setrecommended }) {
               </div>
             </Link>
           );
-        })}
+        })
+
+      : 
+      <div className="for-you__recommended--books">
+     {SkeletonBooks}
+
+      </div>
+      
+     
+      }
     </div>
   );
 }

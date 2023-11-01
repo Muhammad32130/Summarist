@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AiFillPlayCircle } from 'react-icons/ai'
 import Books from '../Components/Books'
 import { Link } from 'react-router-dom'
+import Skeleton from '../Components/Skeleton'
 
 function ForYou({user, audioRef, selected ,setselected,calculateAudio,setsuggested, Suggested }) {
 const [recommended, setrecommended] = useState(null)
@@ -44,6 +45,7 @@ setsuggested(res.data.slice(0, 5))
         duration[0].innerHTML=audioTime
     
   }
+ 
   
   useEffect(()=>{
     getselected()
@@ -56,7 +58,7 @@ setsuggested(res.data.slice(0, 5))
       <div className='for-you__title'>
       Selected just for you
       </div>
-      <Link to={`/book/${selected?.id}`} className="selected__book">
+      {selected ? <Link to={`/book/${selected?.id}`} className="selected__book">
         <div className="selected__book--sub-title">
           {selected?.subTitle}
         </div>
@@ -76,15 +78,18 @@ setsuggested(res.data.slice(0, 5))
         </div>
         <audio onLoadedMetadata={()=>{calculateAudio()}} ref={audioRef} src={selected?.audioLink}></audio>
       </Link>
+    :
+    <Skeleton width={657} height={164} marginbottom={24}></Skeleton>  
+    }
       <div>
       <div className='for-you__title'>Recommended For You</div>
     <div className="for-you__sub--title">We think you'll like these</div>
-    <Books  type={'recommended'} setrecommended={setrecommended} recommended={recommended}></Books>
+    <Books setrecommended={setrecommended} recommended={recommended}></Books>
       </div>
       <div>
       <div className='for-you__title'>Suggested Books</div>
     <div className="for-you__sub--title">Browse those books</div>
-      <Books type={'suggested'} setrecommended={setsuggested} recommended={Suggested}></Books>
+      <Books  setrecommended={setsuggested} recommended={Suggested}></Books>
       </div>
     </div>
   )
