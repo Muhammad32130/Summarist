@@ -3,11 +3,13 @@ import  {AiOutlineSearch}  from 'react-icons/ai'
 import {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { BiTimeFive } from "react-icons/bi";
+import Skeleton from './Skeleton';
 
 function Search() {
   const [booksearch, setbooksearch] = useState(null)
   const [search, setsearch] = useState(null)
   const [audioDurations, setAudioDurations] = useState({});
+  const [loading, setloading] = useState(false)
 
 
   function fetchsearch(inp){
@@ -16,6 +18,9 @@ function Search() {
       axios.get(`https://us-central1-summaristt.cloudfunctions.net/getBooksByAuthorOrTitle?search=${search}`)
       .then((res)=>{
         setbooksearch(res.data)
+        setTimeout(() => {
+          setloading(true)
+        }, 500);
       }).catch((err)=>{
         setbooksearch(null)
       })
@@ -25,9 +30,9 @@ function Search() {
 
     if (search?.length<1){
       setbooksearch(null)
+      setloading(false)
     }
   })
-
 
 
 
@@ -64,7 +69,7 @@ function Search() {
             </div>
             {booksearch !== null && <div className="search__books--wrapper">
 
-               {booksearch?.length > 0 ?
+               {booksearch?.length > 0 && loading ?
                 booksearch.map((book)=>{
                   const duration = audioDurations[book.id]
 
@@ -87,7 +92,18 @@ function Search() {
               </Link>
                     )
                 }): 
-                "No books found"
+                (loading===false?
+                  <>
+                    <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
+                    <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
+                    <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
+                    <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
+                    <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
+                    
+                  </>
+                    :
+                  "No books found"
+                )
                 } 
               
             </div> }

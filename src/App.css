@@ -1607,3 +1607,9 @@ overflow-x:hidden;
 .sidebar__link--not-allowed{
   cursor: not-allowed;
 }
+.libraryskel{
+  flex-wrap: wrap;
+}
+.skelbook{
+  margin-top: 2rem;
+}

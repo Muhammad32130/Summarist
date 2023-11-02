@@ -6,7 +6,7 @@ import Skeleton from "./Skeleton";
 
 
 
-function Books({ recommended, type ,setrecommended }) {
+function Books({ recommended ,setrecommended }) {
   const [audioDurations, setAudioDurations] = useState({});
 
  function audiotime(time, id){
@@ -30,7 +30,7 @@ function Books({ recommended, type ,setrecommended }) {
  }
 
  const SkeletonBooks = Array.from({ length: 5 }, (_, index) => (
-  <div className='for-you__recommended--books-link'>
+  <div>
     <Skeleton width={172} marginbottom={5} height={190} />
     <Skeleton width={150} marginbottom={5} margintop={5} height={25} />
     <Skeleton width={100} marginbottom={5} height={18} />

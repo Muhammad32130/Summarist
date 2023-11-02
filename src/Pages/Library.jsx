@@ -5,11 +5,13 @@ import Modal from "../Components/Modal";
 import Search from "../Components/Search";
 import Sidebar from "../Components/Sidebar";
 import {useState, useEffect} from 'react'
+import Skeleton from "../Components/Skeleton";
 
 function Library({ user,data,guestLogin, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal }) {
 
 const [savedbooks, setbooks] = useState([]);
 const [finsihedBooks, setfinished] = useState([]);
+const [loading, setloading] = useState(false);
 
 async function getBooks(data) {
 
@@ -44,6 +46,31 @@ if(data){
   fetchData();
   
 }
+
+const SkeletonBooks = Array.from({ length: 5 }, (_, index) => (
+  <div className="skelbook" >
+    <Skeleton width={172} marginbottom={5} height={190} />
+    <Skeleton width={150} marginbottom={5} margintop={5} height={25} />
+    <Skeleton width={100} marginbottom={5} height={18} />
+    <Skeleton width={172} height={40} marginbottom={5} />
+    <Skeleton width={91} height={17} />
+  </div>
+));
+
+
+
+useState(()=>{
+  setTimeout(() => {
+    
+    setloading(true);
+
+  }, 500);
+
+
+},[])
+
+
+
   
   return (
     <>
@@ -67,6 +94,7 @@ if(data){
       {user ? (
         <>
            <div className="row">
+            {loading ? 
             <div className="container">
               <div className="for-you__title">Saved Books</div>
               <div className="for-you__sub--title">{savedbooks.length} items</div>
@@ -98,6 +126,16 @@ if(data){
             }
            
             </div>
+          :
+          <>
+          <div className="for-you__recommended--books libraryskel">
+     {SkeletonBooks}
+     {SkeletonBooks}
+     
+
+      </div>
+          </>  
+          }
           </div>
         </>
       ) : (
