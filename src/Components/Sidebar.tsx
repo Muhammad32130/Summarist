@@ -8,14 +8,34 @@ import { BsBookmark } from "react-icons/bs";
 import { RiBallPenLine } from "react-icons/ri";
 import { BiHelpCircle } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {VscCaseSensitive} from "react-icons/vsc"
 
 
-function Sidebar({user,textsize, setsize, signout, setmodal, modal,id}) {
 
-  
-  console.log(id)
+type SidebarProps = {
+  user: any; 
+  textsize: any; 
+  setsize: any; 
+  signout: any; 
+  setmodal: any; 
+  modal: any; 
+  id: any; 
+};
+declare module 'react-router-dom' {
+  interface NavLinkProps {
+    activeClassName?: string;
+  }
+}
+const Sidebar: React.FC<SidebarProps> = ({
+  user,
+  textsize,
+  setsize,
+  signout,
+  setmodal,
+  modal,
+  id,
+}: SidebarProps) => {
   return (
     <div className="sidebar">
       <div className="slogo-wrap" >
@@ -26,7 +46,7 @@ function Sidebar({user,textsize, setsize, signout, setmodal, modal,id}) {
           <NavLink
             to="/for-you"
             className="s-li click"
-            activeclassname="activate"
+            activeClassName="activate"
           >
             <div className="sidebar-active"></div>
             <AiOutlineHome className="li-ico"></AiOutlineHome>
@@ -35,7 +55,7 @@ function Sidebar({user,textsize, setsize, signout, setmodal, modal,id}) {
           <NavLink
             to="/Library"
             className="s-li click"
-            activeclassname="activate"
+            activeClassName="activate"
          >
             <div className="sidebar-active"></div>
             <BsBookmark className="li-ico"></BsBookmark>
@@ -71,28 +91,28 @@ function Sidebar({user,textsize, setsize, signout, setmodal, modal,id}) {
           <NavLink
            to="/settings"
            className="s-li click"
-           activeclassname="activate"
+           activeClassName="activate"
           >
             <div className="sidebar-active"></div>
             <AiOutlineSetting className="li-ico"></AiOutlineSetting>
             Settings
           </NavLink>
-          <div className="s-li sidebar__link--not-allowed" href="">
+          <div className="s-li sidebar__link--not-allowed" >
             <div className="sidebar-active"></div>
             <BiHelpCircle className="li-ico"></BiHelpCircle>
             Help & Support
           </div>
 
-          {user ? <Link onClick={()=>{signout()}} className="s-li" href="">
+          {user ? <div onClick={()=>{signout()}} className="s-li" >
             <div className="sidebar-active"></div>
             <FiLogOut className="li-ico"></FiLogOut>
             Logout
-          </Link>:
-          <Link onClick={()=>{setmodal(true)}} className="s-li" href="">
+          </div>:
+          <div onClick={()=>{setmodal(true)}} className="s-li" >
           <div className="sidebar-active"></div>
           <FiLogOut className="li-ico"></FiLogOut>
           Login
-        </Link>
+        </div>
           }
         </div>
       </div>

@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { arrayRemove, arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 import Modal from "./Modal";
+import Skeleton from "./Skeleton";
 
 function Book({ modal,data,premium, savebook, setsavebook, setmodal , signout,guestLogin,user, Signupuser,Loginuser, signup , setsignup }) {
   const { id } = useParams();
@@ -78,7 +79,7 @@ useEffect(()=>{
       {modal && <Modal guestLogin={guestLogin} user={user} Signupuser={Signupuser} Loginuser={Loginuser} signup={signup} setmodal={setmodal} setsignup={setsignup} ></Modal>}
       <Sidebar setmodal={setmodal} user={user} signout={signout}></Sidebar>
       <Search></Search>
-      {book && 
+      {book ?
       <div className="row">
         <audio ref={audioRef} onLoadedMetadata={()=>{calculateAudio()}} src={book.audioLink}></audio>
         <div className="container">
@@ -161,7 +162,29 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-      </div>}
+      </div>
+    :
+      <div className="row">
+        <div className="container">
+          <div className="inner__wrapper">
+            <div className="inner-book">
+              <Skeleton width={500} marginbottom={20} height={56}></Skeleton>
+              <Skeleton width={200} marginbottom={20} height={20}></Skeleton>
+              <Skeleton width={340} marginbottom={20} height={24}></Skeleton>
+              <Skeleton width={400} marginbottom={20} height={60}></Skeleton>
+              <Skeleton width={400} marginbottom={20} height={48}></Skeleton>
+              <Skeleton width={200} marginbottom={20} height={22}></Skeleton>
+              <Skeleton width={420} marginbottom={40} height={50}></Skeleton>
+              <Skeleton width={706} marginbottom={20} height={216}></Skeleton>
+              <Skeleton width={706}  height={216}></Skeleton>
+            </div>
+              <Skeleton width={300} height={300}></Skeleton>
+              
+          </div>
+        </div>
+      </div>
+    
+    }
     </div>
   );
 }

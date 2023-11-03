@@ -6,7 +6,7 @@ import Skeleton from "./Skeleton";
 
 
 
-function Books({ recommended ,setrecommended }) {
+function Books({ recommended  }) {
   const [audioDurations, setAudioDurations] = useState({});
 
  function audiotime(time, id){

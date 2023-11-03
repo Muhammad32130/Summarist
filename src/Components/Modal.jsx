@@ -75,7 +75,7 @@ function Modal({ guestLogin,user, Signupuser,Loginuser, signup ,setmodal, setsig
                       loading="lazy"
                     ></img>
                   </figure>
-                  <div bis_skin_checked="1">{signup ? "Sign up" :"Login"} with Google</div>
+                  <div  >{signup ? "Sign up" :"Login"} with Google</div>
                 </button>
                 <div className="auth__separator">
                   <span className="auth__separator--text">or</span>
@@ -102,7 +102,7 @@ function Modal({ guestLogin,user, Signupuser,Loginuser, signup ,setmodal, setsig
                   </button>
                 </form>
               </div>
-              {!signup && <div className="auth__forgot--password" bis_skin_checked="1">
+              {!signup && <div className="auth__forgot--password"  >
                 Forgot your password?
               </div>}
               <button onClick={()=>{setsignup(!signup)}} className="auth__switch--btn">
@@ -114,7 +114,7 @@ function Modal({ guestLogin,user, Signupuser,Loginuser, signup ,setmodal, setsig
                   setmodal(false);
                   setsignup(false)
                 }}
-                bis_skin_checked="1"
+                 
               >
                 <svg
                   stroke="currentColor"

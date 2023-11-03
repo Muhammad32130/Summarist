@@ -9,38 +9,43 @@ import Modal from "../Components/Modal";
 
 
 
-function Home({ modal, signup, setsignup ,setmodal, guestLogin, Signupuser, Loginuser, user}) {
- 
+type HomeProps = {
+  modal: boolean; // Replace 'any' with the actual type of 'modal'
+  signup: boolean; // Replace 'any' with the actual type of 'signup'
+  setsignup: any; // Replace 'any' with the actual type of 'setsignup'
+  setmodal: any; // Replace 'any' with the actual type of 'setmodal'
+  guestLogin: Function; // Replace 'any' with the actual type of 'guestLogin'
+  Signupuser: Function; // Replace 'any' with the actual type of 'Signupuser'
+  Loginuser: Function; // Replace 'any' with the actual type of 'Loginuser'
+  user: Object | null; // Replace 'any' with the actual type of 'user'
+};
 
-
-  
+const Home: React.FC<HomeProps> = ({ modal, signup, setsignup, setmodal, guestLogin, Signupuser, Loginuser, user }: HomeProps) => {
   function statisticsHeading() {
-    let statistics__content = document.querySelectorAll(
-      ".statistics__content--header"
-      );
-      for (let i = 0; i < statistics__content.length; i++) {
-        let children = statistics__content[i].children;
-        
-        for (let i = 0; i < children?.length; i++) {
-          setTimeout(() => {
-            if (i > 0) {
-              children[i - 1].classList.remove("statistics__heading--active");
-            }
-            children[i].classList.add("statistics__heading--active");
-            if (i === children.length - 1) {
-              setTimeout(() => {
-                children[i].classList.remove("statistics__heading--active");
-                statisticsHeading(); // Restart the loop
-              }, 3000);
-            }
-          }, i * 3000);
-        }
+    let statistics__content = document.querySelectorAll(".statistics__content--header");
+    for (let i = 0; i < statistics__content.length; i++) {
+      let children = statistics__content[i].children;
+      for (let j = 0; j < children?.length; j++) {
+        setTimeout(() => {
+          if (j > 0) {
+            children[j - 1].classList.remove("statistics__heading--active");
+          }
+          children[j].classList.add("statistics__heading--active");
+          if (j === children.length - 1) {
+            setTimeout(() => {
+              children[j].classList.remove("statistics__heading--active");
+              statisticsHeading(); // Restart the loop
+            }, 3000);
+          }
+        }, j * 3000);
       }
     }
-    useEffect(() => {
-      statisticsHeading();
-    
-    }, []);
+  }
+  console.log(user)
+
+  useEffect(() => {
+    statisticsHeading();
+  }, []);
     return (
       <>
       <nav className="nav">
@@ -66,7 +71,7 @@ function Home({ modal, signup, setsignup ,setmodal, guestLogin, Signupuser, Logi
       <section id="landing">
         {modal && 
           
-                <Modal guestLogin={guestLogin} signup={signup} Signupuser={Signupuser} Loginuser={Loginuser} setmodal={setmodal} setsignup={setsignup}></Modal>
+                <Modal user={user} guestLogin={guestLogin} signup={signup} Signupuser={Signupuser} Loginuser={Loginuser} setmodal={setmodal} setsignup={setsignup}></Modal>
 
         }
         <div className="container">

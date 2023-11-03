@@ -1,5 +1,5 @@
 import "./App.css";
-import Home from "./Pages/Home.jsx";
+import Home from "./Pages/Home";
 import { useState, useEffect, useRef } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Page from "./Pages/Page";

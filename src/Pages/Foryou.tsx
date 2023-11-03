@@ -5,45 +5,58 @@ import Books from '../Components/Books'
 import { Link } from 'react-router-dom'
 import Skeleton from '../Components/Skeleton'
 
-function ForYou({user, audioRef, selected ,setselected,calculateAudio,setsuggested, Suggested }) {
-const [recommended, setrecommended] = useState(null)
+type ForYouProps = {
+  user: any; // Replace 'any' with the actual type of 'user'
+  audioRef: React.RefObject<HTMLAudioElement>;
+  selected: any; // Replace 'any' with the actual type of 'selected'
+  setselected: React.Dispatch<React.SetStateAction<any>>;
+  setsuggested: React.Dispatch<React.SetStateAction<any[]>>;
+  Suggested: any[]; // Replace 'any[]' with the actual type of 'Suggested'
+};
 
+function ForYou({ user, audioRef, selected, setselected, setsuggested, Suggested }: ForYouProps) {
+  const [recommended, setrecommended] = useState<any[]>([]);
 
-  function getselected(){
+  useEffect(() => {
+    getrecommended();
+    getSuggested();
+  }, []);
 
-    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected').then((res)=>{
-      setselected(res.data[0])
-    })
+  function getselected() {
+    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected').then((res) => {
+      setselected(res.data[0]);
+    });
   }
-  function getrecommended(){
-    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended').then((res)=>{
-setrecommended(res.data.slice(0, 5))
-    })
+
+  function getrecommended() {
+    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended').then((res) => {
+      setrecommended(res.data.slice(0, 5));
+    });
   }
-  function getSuggested(){
-    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested').then((res)=>{
-setsuggested(res.data.slice(0, 5))
-    })
+
+  function getSuggested() {
+    axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested').then((res) => {
+      setsuggested(res.data.slice(0, 5));
+    });
   }
-  
 
+  function calculateAudio() {
+    const duration = document.querySelectorAll('.selected__book--duration');
+    let audioTime = "";
+    const time = audioRef?.current?.duration || 0;
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = Math.floor(time % 60);
+    if (minutes === 0 && selected) {
+      audioTime = `${remainingSeconds} secs`;
+    } else if (remainingSeconds === 0) {
+      audioTime = `${minutes} mins`;
+    } else if (selected) {
+      audioTime = `${minutes} mins ${remainingSeconds} secs`;
+    }
 
-  function calculateAudio(){  
-    const duration = document.querySelectorAll('.selected__book--duration')
-    let audioTime = null
-      const time = audioRef?.current?.duration
-      const minutes = Math.floor(time / 60);
-      const remainingSeconds = Math.floor(time % 60);
-      if (minutes === 0 && selected) {
-        audioTime = `${remainingSeconds} secs`
-      } else if (remainingSeconds === 0) {
-       audioTime = `${minutes} mins`
-      } else if(selected) {
-        audioTime = `${minutes} mins ${remainingSeconds} secs`
-      }
-
-        duration[0].innerHTML=audioTime
-    
+    if (duration.length > 0) {
+      duration[0].innerHTML = audioTime;
+    }
   }
  
   
@@ -79,17 +92,17 @@ setsuggested(res.data.slice(0, 5))
         <audio onLoadedMetadata={()=>{calculateAudio()}} ref={audioRef} src={selected?.audioLink}></audio>
       </Link>
     :
-    <Skeleton width={657} height={164} marginbottom={24}></Skeleton>  
+    <Skeleton width={657} margintop={0} height={164} marginbottom={24}></Skeleton>  
     }
       <div>
       <div className='for-you__title'>Recommended For You</div>
     <div className="for-you__sub--title">We think you'll like these</div>
-    <Books setrecommended={setrecommended} recommended={recommended}></Books>
+    <Books  recommended={recommended}></Books>
       </div>
       <div>
       <div className='for-you__title'>Suggested Books</div>
     <div className="for-you__sub--title">Browse those books</div>
-      <Books  setrecommended={setsuggested} recommended={Suggested}></Books>
+      <Books  recommended={Suggested}></Books>
       </div>
     </div>
   )
