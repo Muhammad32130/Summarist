@@ -15,7 +15,7 @@ import { db } from "../Firebase";
 import Modal from "./Modal";
 import Skeleton from "./Skeleton";
 
-function Book({ modal,data,premium, savebook, setsavebook, setmodal , signout,guestLogin,user, Signupuser,Loginuser, signup , setsignup }) {
+function Book({ modal,sidebar, setsidebar,data,premium, savebook, setsavebook, setmodal , signout,guestLogin,user, Signupuser,Loginuser, signup , setsignup }) {
   const { id } = useParams();
   const [audiotime, setaudiotime] = useState(null);
   const [booksave, setbooksave] = useState(false);
@@ -77,8 +77,8 @@ useEffect(()=>{
   return (
     <div className="wrapper">
       {modal && <Modal guestLogin={guestLogin} user={user} Signupuser={Signupuser} Loginuser={Loginuser} signup={signup} setmodal={setmodal} setsignup={setsignup} ></Modal>}
-      <Sidebar setmodal={setmodal} user={user} signout={signout}></Sidebar>
-      <Search></Search>
+       <Sidebar sidebar={sidebar} setsidebar={setsidebar} setmodal={setmodal} user={user} signout={signout}></Sidebar>
+         <Search sidebar={sidebar} setsidebar={setsidebar} sidebar={sidebar} setsidebar={setsidebar} sidebar={sidebar} setsidebar={setsidebar}></Search>
       {book ?
       <div className="row">
         <audio ref={audioRef} onLoadedMetadata={()=>{calculateAudio()}} src={book.audioLink}></audio>

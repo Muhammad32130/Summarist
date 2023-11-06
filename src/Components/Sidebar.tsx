@@ -10,6 +10,7 @@ import { BiHelpCircle } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
 import { Link, NavLink } from "react-router-dom";
 import {VscCaseSensitive} from "react-icons/vsc"
+import {useRef, useEffect} from 'react'
 
 
 
@@ -21,6 +22,8 @@ type SidebarProps = {
   setmodal: any; 
   modal: any; 
   id: any; 
+  sidebar: boolean,
+  setsidebar: any,
 };
 declare module 'react-router-dom' {
   interface NavLinkProps {
@@ -29,6 +32,8 @@ declare module 'react-router-dom' {
 }
 const Sidebar: React.FC<SidebarProps> = ({
   user,
+  sidebar,
+  setsidebar,
   textsize,
   setsize,
   signout,
@@ -36,8 +41,14 @@ const Sidebar: React.FC<SidebarProps> = ({
   modal,
   id,
 }: SidebarProps) => {
+  
+  const ref = useRef<any>(null);
+  
   return (
-    <div className="sidebar">
+    <>
+      <div onClick={()=>{setsidebar(false)}} className={`${sidebar && "side"}`}></div>
+    <div className={`sidebar ${sidebar && "sidebar-show"}`}>
+
       <div className="slogo-wrap" >
         <img className="sidebar-logo" src={logo} alt="" />
       </div>
@@ -47,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             to="/for-you"
             className="s-li click"
             activeClassName="activate"
-          >
+            >
             <div className="sidebar-active"></div>
             <AiOutlineHome className="li-ico"></AiOutlineHome>
             For you
@@ -56,7 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             to="/Library"
             className="s-li click"
             activeClassName="activate"
-         >
+            >
             <div className="sidebar-active"></div>
             <BsBookmark className="li-ico"></BsBookmark>
             My Library
@@ -92,7 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({
            to="/settings"
            className="s-li click"
            activeClassName="activate"
-          >
+           >
             <div className="sidebar-active"></div>
             <AiOutlineSetting className="li-ico"></AiOutlineSetting>
             Settings
@@ -117,6 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
     </div>
+          </>
   );
 }
 

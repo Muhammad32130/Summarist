@@ -9,7 +9,7 @@ import Modal from '../Components/Modal'
 import Book from '../Components/Book'
 
 
-function Page({modal,audioRef,selected,setselected,calculateAudio,setsuggested,Suggested, signup, setsignup, setmodal, guestLogin, signout ,Signupuser, Loginuser, user}) {
+function Page({modal,audioRef,sidebar, setsidebar, selected,setselected,calculateAudio,setsuggested,Suggested, signup, setsignup, setmodal, guestLogin, signout ,Signupuser, Loginuser, user}) {
 const location = useLocation()
 const {id} = useParams()
 
@@ -17,8 +17,8 @@ const {id} = useParams()
     <div className='foru-main'>
       <div className="wrapper">
 
-      <Sidebar setmodal={setmodal} user={user} signout={signout} ></Sidebar>
-      <Search></Search>
+       <Sidebar sidebar={sidebar} setsidebar={setsidebar} setmodal={setmodal} user={user} signout={signout} ></Sidebar>
+       <Search sidebar={sidebar} setsidebar={setsidebar}></Search>
       <div className="row">
     <div className="container">
 {modal &&

@@ -8,6 +8,8 @@ import {useState, useEffect} from 'react'
 import Skeleton from "../Components/Skeleton";
 
 type LibraryProps = {
+  sidebar: boolean,
+  setsidebar: any,
   user: any; // Replace 'any' with the actual type of 'user'
   data: any; // Replace 'any' with the actual type of 'data'
   guestLogin: any; // Replace 'any' with the actual type of 'guestLogin'
@@ -21,6 +23,8 @@ type LibraryProps = {
 };
 
 const Library: React.FC<LibraryProps> = ({
+  sidebar,
+  setsidebar,
   user,
   data,
   guestLogin,
@@ -55,27 +59,22 @@ const Library: React.FC<LibraryProps> = ({
     if (data.SavedBooks && savedbooks.length !== data?.SavedBooks.length) {
       const savedBooksData = await getBooks(data?.SavedBooks);
       setbooks([...savedbooks, ...savedBooksData]);
+
     }
 
     if (data.FinsihedBooks && finsihedBooks.length !== data?.FinsihedBooks.length) {
       const finishedBooksData = await getBooks(data?.FinsihedBooks);
       setfinished([...finsihedBooks, ...finishedBooksData]);
     }
+    setloading(true);
   }
 
   useEffect(() => {
     if (data) {
       fetchData();
-      setTimeout(() => {
-        setloading(true);
-      }, 500);
+     
     }
-
-    if (user) {
-      setTimeout(() => {
-        setloading(true);
-      }, 500);
-    }
+  
   }, [data, user]);
 
   const SkeletonBooks = Array.from({ length: 5 }, (_, index) => (
@@ -91,7 +90,7 @@ const Library: React.FC<LibraryProps> = ({
   
   return (
     <>
-      <Sidebar
+       <Sidebar sidebar={sidebar} setsidebar={setsidebar}
       textsize={null}
       setsize={null}
       id={null}
@@ -100,7 +99,7 @@ const Library: React.FC<LibraryProps> = ({
         user={user}
         signout={signout}
       ></Sidebar>
-      <Search></Search>
+       <Search sidebar={sidebar} setsidebar={setsidebar}></Search>
       {modal && (
         <Modal
           user={user}

@@ -11,17 +11,17 @@ import {
 } from "firebase/auth";
 import { app, auth, db } from "./Firebase";
 import { User } from "firebase/auth";
-import { DocumentData, doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import { DocumentData, doc, onSnapshot, setDoc } from "firebase/firestore";
 import Book from "./Components/Book";
 import Library from "./Pages/Library";
 import Settings from "./Pages/Settings";
 import Player from "./Pages/Player";
-import Modal from "./Components/Modal";
 import ChoosePlan from "./Pages/ChoosePlan";
 import { getPremiumStatus } from "./substat";
 
 function App() {
   const [User, setuser] = useState<User | null>(null);
+  const [sidebar, setsidebar] = useState<boolean>(false)
   const [data, setdata] = useState<DocumentData | null>(null);
   const [modal, setmodal] = useState<boolean>(false);
   const [signup, setsignup] = useState<boolean>(false);
@@ -152,6 +152,8 @@ function App() {
             path="/for-you"
             element={
               <Page
+              sidebar={sidebar}
+              setsidebar={setsidebar}
                 audioRef={audioRef}
                 selected={selected}
                 setselected={setselected}
@@ -174,6 +176,8 @@ function App() {
             path="/Library"
             element={
               <Library
+              sidebar={sidebar}
+              setsidebar={setsidebar}
                 data={data}
                 signout={signout}
                 signup={signup}
@@ -191,6 +195,8 @@ function App() {
             path="/Settings"
             element={
               <Settings
+              sidebar={sidebar}
+              setsidebar={setsidebar}
                 premium={premium}
                 signout={signout}
                 signup={signup}
@@ -208,6 +214,8 @@ function App() {
             path="/book/:id"
             element={
               <Book
+              sidebar={sidebar}
+              setsidebar={setsidebar}
                 modal={modal}
                 guestLogin={guestLogin}
                 Signupuser={Signupuser}
@@ -232,6 +240,8 @@ function App() {
             path="/player/:id"
             element={
               <Player
+              sidebar={sidebar}
+              setsidebar={setsidebar}
               finished = {finsihed}
               setfinished={setfinished}
                 setmodal={setmodal}

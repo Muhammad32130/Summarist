@@ -10,7 +10,7 @@ import {IoIosPause} from 'react-icons/io'
 import {ImSpinner2} from 'react-icons/im'
 import Skeleton from "../Components/Skeleton";
 
-function Player({setmodal,finished, setfinished, user, signout}) {
+function Player({setmodal,sidebar, setsidebar,finished, setfinished, user, signout}) {
   const playeraudio = useRef();
   const progressRef = useRef();
   const [textsize, setsize] = useState('22');
@@ -106,8 +106,8 @@ useEffect(()=>{
 
   return (
     <div className="wrapper">
-      <Sidebar setmodal={setmodal} user={user} signout={signout} textsize={textsize} setsize={setsize} id={id}></Sidebar>
-      <Search></Search>
+       <Sidebar sidebar={sidebar} setsidebar={setsidebar} setmodal={setmodal} user={user} signout={signout} textsize={textsize} setsize={setsize} id={id}></Sidebar>
+       <Search sidebar={sidebar} setsidebar={setsidebar}></Search>
       <div className="summary">
         <audio ref={playeraudio} src={book?.audioLink}></audio>
           {book ?

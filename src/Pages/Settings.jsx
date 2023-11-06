@@ -3,11 +3,11 @@ import Modal from '../Components/Modal'
 import Search from '../Components/Search'
 import Sidebar from '../Components/Sidebar'
 
-function Settings({user,premium,guestLogin, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal}) {
+function Settings({user,premium,sidebar, setsidebar,guestLogin, signup,Signupuser,Loginuser, setsignup, signout, modal, setmodal}) {
   return (
     <>
-      <Sidebar setmodal={setmodal} user={user} signout={signout} ></Sidebar>
-        <Search></Search>
+       <Sidebar sidebar={sidebar} setsidebar={setsidebar} setmodal={setmodal} user={user} signout={signout} ></Sidebar>
+         <Search sidebar={sidebar} setsidebar={setsidebar}></Search>
     <div className="container">
       <div className="row">
 <div className="section__title page__title">Settings</div>

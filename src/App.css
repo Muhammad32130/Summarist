@@ -1623,3 +1623,50 @@ overflow-x:hidden;
   font-size: 52px;
   color: #1c536b;
 }
+.sidebar__toggle--btn svg {
+  width: 24px;
+  height: 24px;
+}
+.sidebar__toggle--btn {
+  margin-left: 1rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .sidebar__toggle--btn {
+    display: flex;
+}
+.sidebar{
+  transform: translateX(-100%);
+}
+.wrapper{
+  margin-left: 0;
+width: 100%;
+}
+.selected__book{
+  width: 100%;
+}
+.sidebar-show{
+  transform: translateX(0);
+  transition: all 300ms ease-in-out;
+  width: 80%;
+  z-index: 99;
+}
+.side{
+  
+  width: 100%;
+  height: 100%;
+  background-color: #3a4649;
+  opacity: .65;
+  transition: opacity .4s ease;
+  position: absolute;
+right: 0;
+  bottom: 0;
+  z-index: 20;
+}
+.row{
+  position: relative;
+}
+}
