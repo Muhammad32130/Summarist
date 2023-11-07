@@ -875,10 +875,7 @@ background-color: #f1f6f4;
   padding: 4px 4px 4px 6px;
 }
 .for-you__recommended--books {
-  display: flex;
-  overflow-x: auto;
   gap: 16px;
-overflow-x:hidden;
   margin-bottom: 32px;
 }
 .for-you__sub--title {
@@ -1755,3 +1752,13 @@ right: 0;
 .audio__book--summary-title{
   font-weight: 600;
 }
+.show{
+  height: 96px !important;
+}
+.recommended-skel{
+  display: flex !important;
+  gap: 16px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+ 

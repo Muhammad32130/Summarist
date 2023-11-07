@@ -4,6 +4,8 @@ import { AiFillPlayCircle } from 'react-icons/ai'
 import Books from '../Components/Books'
 import { Link } from 'react-router-dom'
 import Skeleton from '../Components/Skeleton'
+import { Carousel } from "react-responsive-carousel";
+
 
 type ForYouProps = {
   user: any; // Replace 'any' with the actual type of 'user'
@@ -30,13 +32,13 @@ function ForYou({ user, audioRef, selected, setselected, setsuggested, Suggested
 
   function getrecommended() {
     axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended').then((res) => {
-      setrecommended(res.data.slice(0, 5));
+      setrecommended(res.data);
     });
   }
 
   function getSuggested() {
     axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested').then((res) => {
-      setsuggested(res.data.slice(0, 5));
+      setsuggested(res.data);
     });
   }
 
@@ -97,12 +99,13 @@ function ForYou({ user, audioRef, selected, setselected, setsuggested, Suggested
       <div>
       <div className='for-you__title'>Recommended For You</div>
     <div className="for-you__sub--title">We think you'll like these</div>
-    <Books  recommended={recommended}></Books>
+
+    <Books recommended={recommended}  ></Books>
       </div>
       <div>
       <div className='for-you__title'>Suggested Books</div>
     <div className="for-you__sub--title">Browse those books</div>
-      <Books  recommended={Suggested}></Books>
+      <Books  recommended={Suggested} ></Books>
       </div>
     </div>
   )

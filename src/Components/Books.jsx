@@ -1,12 +1,15 @@
 import { AiOutlineStar } from "react-icons/ai";
 import { BiTimeFive } from "react-icons/bi";
-import { Link, useParams } from "react-router-dom";
-import {useEffect, useState, useRef} from 'react'
+import { Link } from "react-router-dom";
+import { useState, useEffect} from 'react'
 import Skeleton from "./Skeleton";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 
 
-function Books({ recommended  }) {
+function Books({ recommended }) {
   const [audioDurations, setAudioDurations] = useState({});
 
  function audiotime(time, id){
@@ -25,12 +28,14 @@ function Books({ recommended  }) {
   // Use the padStart() method to add leading zeros for single-digit values
   const formattedMinutes = String(minutes).padStart(2, '0');
   const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+if(seconds){
 
   return `${formattedMinutes}:${formattedSeconds}`;
+}
  }
 
  const SkeletonBooks = Array.from({ length: 5 }, (_, index) => (
-  <div>
+  <div >
     <Skeleton width={172} marginbottom={5} height={190} />
     <Skeleton width={150} marginbottom={5} margintop={5} height={25} />
     <Skeleton width={100} marginbottom={5} height={18} />
@@ -39,17 +44,72 @@ function Books({ recommended  }) {
   </div>
 ));
 
+const settings = {
+  arrows: true,
+  infinite: false,
+  speed: 500,
+  slidesToShow:5,
+  slidesToScroll:5,
+  responsive: [
+    {
+      breakpoint: 1100,
+      settings: {
+        slidesToShow: 5,
+        slidesToScroll: 5,
+        
+      }
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 405,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+}
+
 
 
 
   
   return (
-    <div className="for-you__recommended--books">
-      {recommended ?
-        recommended?.map((book, index) => {
+        <div className="for-you__recommended--books">
+
+{recommended ? 
+  <Slider
+
+   {...settings}
+      >
+
+
+      {recommended?.map((book, index) => {
           const duration = audioDurations[book.id]
-       
+          
           return (
+            
             <Link href="" to={`/book/${book.id}`} key={index} className="for-you__recommended--books-link">
               {book.subscriptionRequired &&
                 
@@ -87,15 +147,16 @@ function Books({ recommended  }) {
             </Link>
           );
         })
-
-      : 
-      <div className="for-you__recommended--books">
-     {SkeletonBooks}
-
-      </div>
       
-     
-      }
+      
+    }
+    </Slider>
+  : 
+  <div className="recommended-skel">
+{SkeletonBooks}
+
+</div>  
+  }
     </div>
   );
 }

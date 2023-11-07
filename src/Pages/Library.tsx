@@ -129,6 +129,7 @@ const Library: React.FC<LibraryProps> = ({
               </div>
               : 
               <Books recommended={savedbooks}></Books>
+             
                 }
               <div className="for-you__title">Finished</div>
               <div className="for-you__sub--title">{finsihedBooks.length} items</div>
@@ -143,12 +144,13 @@ const Library: React.FC<LibraryProps> = ({
               </div>
             :
             <Books recommended={finsihedBooks}></Books>  
+            
             }
            
             </div>
           :
           <>
-          <div className="for-you__recommended--books libraryskel">
+          <div className="for-you__recommended--books libraryskel recommended-skel">
      {SkeletonBooks}
      {SkeletonBooks}
      
@@ -162,7 +164,7 @@ const Library: React.FC<LibraryProps> = ({
         <Login setmodal={setmodal}></Login>
         :
         <div className="row">
-        <div className="for-you__recommended--books libraryskel">
+        <div className="for-you__recommended--books libraryskel recommended-skel">
      {SkeletonBooks}
      {SkeletonBooks}
       </div>

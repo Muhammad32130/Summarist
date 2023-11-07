@@ -10,6 +10,7 @@ type ChoosePlanProps = {
 
 function ChoosePlan({ user }: ChoosePlanProps) {
   const [plan, setplan] = useState<string>('Yearly');
+  const [accordion, setaccordion] = useState<string>('0')
 
   async function checkout() {
     let priceId = null;
@@ -154,7 +155,7 @@ function ChoosePlan({ user }: ChoosePlanProps) {
               </div>
             </div>
             <div className="faq__wrapper">
-              <div className="accordion__card"  >
+              <div className="accordion__card" onClick={()=>{setaccordion('0')}} >
                 <div className="accordion__header"  >
                   <div className="accordion__title"  >
                     How does the free 7-day trial work?
@@ -176,8 +177,8 @@ function ChoosePlan({ user }: ChoosePlanProps) {
                   </svg>
                 </div>
                 <div
-                  className="collapse show"
-                  style={{ height: "96px" }}
+                  className={`collapse ${accordion==="0" && "show"} `}
+                  
                    
                 >
                   <div className="accordion__body"  >
@@ -191,7 +192,7 @@ function ChoosePlan({ user }: ChoosePlanProps) {
                   </div>
                 </div>
               </div>
-              <div className="accordion__card"  >
+              <div className="accordion__card" onClick={()=>{setaccordion("1")}} >
                 <div className="accordion__header"  >
                   <div className="accordion__title"  >
                     Can I switch subscriptions from monthly to yearly, or yearly
@@ -213,9 +214,9 @@ function ChoosePlan({ user }: ChoosePlanProps) {
                     ></path>
                   </svg>
                 </div>
+                
                 <div
-                  className="collapse "
-                  style={{ height: "0px" }}
+                  className={`collapse ${accordion==="1" && "show"} `}
                    
                 >
                   <div className="accordion__body"  >
@@ -226,7 +227,7 @@ function ChoosePlan({ user }: ChoosePlanProps) {
                   </div>
                 </div>
               </div>
-              <div className="accordion__card"  >
+              <div className="accordion__card" onClick={()=>{setaccordion("2")}} >
                 <div className="accordion__header"  >
                   <div className="accordion__title"  >
                     What's included in the Premium plan?
@@ -248,8 +249,7 @@ function ChoosePlan({ user }: ChoosePlanProps) {
                   </svg>
                 </div>
                 <div
-                  className="collapse "
-                  style={{ height: "0px" }}
+                  className={`collapse ${accordion==="2" && "show"} `}
                    
                 >
                   <div className="accordion__body"  >
@@ -261,7 +261,7 @@ function ChoosePlan({ user }: ChoosePlanProps) {
                   </div>
                 </div>
               </div>
-              <div className="accordion__card"  >
+              <div className="accordion__card" onClick={()=>{setaccordion("3")}} >
                 <div className="accordion__header"  >
                   <div className="accordion__title"  >
                     Can I cancel during my trial or subscription?
@@ -283,8 +283,7 @@ function ChoosePlan({ user }: ChoosePlanProps) {
                   </svg>
                 </div>
                 <div
-                  className="collapse "
-                  style={{ height: "0px" }}
+                  className={`collapse ${accordion ==="3" && "show"} `}
                    
                 >
                   <div className="accordion__body"  >
