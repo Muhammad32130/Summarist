@@ -112,7 +112,7 @@ const Library: React.FC<LibraryProps> = ({
         ></Modal>
       )}
       {user && loading ? (
-        <>
+        <div className="wrapper">
            <div className="row">
             {loading ? 
             <div className="container">
@@ -157,7 +157,7 @@ const Library: React.FC<LibraryProps> = ({
           </>  
           }
           </div>
-        </>
+        </div>
       ) : (loading ?
         <Login setmodal={setmodal}></Login>
         :

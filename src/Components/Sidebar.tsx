@@ -10,7 +10,7 @@ import { BiHelpCircle } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
 import { Link, NavLink } from "react-router-dom";
 import {VscCaseSensitive} from "react-icons/vsc"
-import {useRef, useEffect} from 'react'
+import {useRef, useEffect, useState} from 'react'
 
 
 
@@ -43,16 +43,22 @@ const Sidebar: React.FC<SidebarProps> = ({
 }: SidebarProps) => {
   
   const ref = useRef<any>(null);
+
+useEffect(()=>{
+setsidebar(false)
+},[])
+
+
   
   return (
     <>
-      <div onClick={()=>{setsidebar(false)}} className={`${sidebar && "side"}`}></div>
-    <div className={`sidebar ${sidebar && "sidebar-show"}`}>
+      <div onClick={()=>{setsidebar(false)}} className={`${sidebar ?"side-overlay" :"side-overlay-hidden"}`}></div>
+    <div className={`sidebar ${sidebar ? "sidebar-show":"side-hidden"}`}>
 
       <div className="slogo-wrap" >
         <img className="sidebar-logo" src={logo} alt="" />
       </div>
-      <div className="li-wrap" style={id && {height: 'calc(100vh - 170px)'}}>
+      <div className={`li-wrap ${id && 'li-wrap-res'}`} style={id && {height: 'calc(100vh - 170px)'}}>
         <div className="sidebar-li">
           <NavLink
             to="/for-you"
