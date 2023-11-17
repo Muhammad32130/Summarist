@@ -9,7 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 
 
-function Books({ recommended }) {
+function Books({ recommended, setrecommended }) {
   const [audioDurations, setAudioDurations] = useState({});
 
  function audiotime(time, id){

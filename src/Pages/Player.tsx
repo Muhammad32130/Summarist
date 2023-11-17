@@ -10,15 +10,24 @@ import {IoIosPause} from 'react-icons/io'
 import {ImSpinner2} from 'react-icons/im'
 import Skeleton from "../Components/Skeleton";
 
-function Player({setmodal,sidebar, setsidebar,finished, setfinished, user, signout}) {
-  const playeraudio = useRef();
-  const progressRef = useRef();
-  const [textsize, setsize] = useState('22');
-  const [play, setplay] = useState(false);
-  const [currentTime, setCurrentTime] = useState("00:00");
-  const [book, setbook] = useState();
-  const { id } = useParams();
-console.log(user)
+interface PlayerProps {
+  setmodal: (value: boolean) => void;
+  sidebar: boolean;
+  setsidebar: (value: boolean) => void;
+  finished: any;
+  setfinished: (value: any) => void;
+  user: any;
+  signout: () => void;
+}
+
+function Player({ setmodal, sidebar, setsidebar, finished, setfinished, user, signout }: PlayerProps) {
+  const playeraudio = useRef<HTMLAudioElement>(null);
+  const progressRef = useRef<HTMLInputElement>(null);
+  const [textsize, setsize] = useState<string>('22');
+  const [play, setplay] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<string>("00:00");
+  const [book, setbook] = useState<any>();
+  const { id } = useParams<{ id: string }>();
 
   function getbook() {
     axios
@@ -27,20 +36,20 @@ console.log(user)
         setbook(res.data);
       });
   }
+
   const formatTime = () => {
     if (playeraudio?.current) {
       const minutes = Math.floor(playeraudio.current.duration / 60);
       const formatMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
       const seconds = Math.floor(playeraudio.current.duration % 60);
       const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-      if (isNaN(formatMinutes)) {
-        return "00:00";
-      } else {
+      
         return `${formatMinutes}:${formatSeconds}`;
-      }
+      
     }
+    return "00:00";
   };
- 
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (playeraudio.current) {
@@ -50,12 +59,11 @@ console.log(user)
         const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
         setCurrentTime(`${formatMinutes}:${formatSeconds}`);
       }
-  
-      if(playeraudio?.current?.ended){
-        setplay(false)
+
+      if (playeraudio?.current?.ended) {
+        setplay(false);
       }
     }, 0);
-  
 
     return () => {
       clearInterval(intervalId);
@@ -68,45 +76,49 @@ console.log(user)
 
   function toggleaudio() {
     if (play) {
-      playeraudio.current.pause();
+      playeraudio.current?.pause();
       setplay(false);
     } else {
-      playeraudio.current.play();
+      playeraudio.current?.play();
       setplay(true);
     }
   }
 
   function skiptime() {
-    playeraudio.current.currentTime = playeraudio.current.currentTime + 10;
+    playeraudio.current!.currentTime = playeraudio.current!.currentTime + 10;
   }
+
   function rewindtime() {
-    playeraudio.current.currentTime = playeraudio.current.currentTime - 10;
+    playeraudio.current!.currentTime = playeraudio.current!.currentTime - 10;
   }
-  function handleTimeChange(e) {
-    playeraudio.current.currentTime = progressRef.current.value;
+
+  function handleTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (playeraudio.current) {
+      playeraudio.current.currentTime = parseFloat(e.target.value);
+    }
   }
- function finsihedBook(){
-  if(user && book){
-    const docref = doc(db, "users", user?.uid)
-    
-    updateDoc(docref,{
-      FinsihedBooks:arrayUnion(book.id)
-    })
-    console.log("added")
+
+  function finsihedBook() {
+    if (user && book) {
+      const docref = doc(db, "users", user?.uid);
+
+      updateDoc(docref, {
+        FinsihedBooks: arrayUnion(book.id)
+      });
+      console.log("added");
+    }
   }
-}
- 
-useEffect(()=>{
-  finsihedBook()
-},[playeraudio?.current?.ended=== true])
-  
+
+  useEffect(() => {
+    finsihedBook();
+  }, [playeraudio?.current?.ended === true]);
  
 
  
 
   return (
     <div className="wrapper">
-       <Sidebar sidebar={sidebar} setsidebar={setsidebar} setmodal={setmodal} user={user} signout={signout} textsize={textsize} setsize={setsize} id={id}></Sidebar>
+       <Sidebar sidebar={sidebar} setsidebar={setsidebar} setmodal={setmodal} user={user} signout={signout} textsize={textsize} setsize={setsize} modal={null} id={id}></Sidebar>
        <Search sidebar={sidebar} setsidebar={setsidebar}></Search>
       <div className="summary">
         <audio ref={playeraudio} src={book?.audioLink}></audio>
@@ -129,7 +141,7 @@ useEffect(()=>{
                 {book ?
                   <img src={book?.imageLink} alt="" className="book__image" />
                   :
-                  <Skeleton width={48} height={48}></Skeleton>
+                  <Skeleton margintop={0} marginbottom={0} width={48} height={48}></Skeleton>
                 }
               </figure>
             </figure>
@@ -141,8 +153,8 @@ useEffect(()=>{
               </>
             : 
             <>
-            <Skeleton width={120} height={17}></Skeleton>
-            <Skeleton width={100} height={17} ></Skeleton>
+            <Skeleton margintop={0} marginbottom={0} width={120} height={17}></Skeleton>
+            <Skeleton margintop={0} marginbottom={0} width={100} height={17} ></Skeleton>
             </>
             }
             </div>

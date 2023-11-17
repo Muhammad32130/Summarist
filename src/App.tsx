@@ -18,6 +18,7 @@ import Settings from "./Pages/Settings";
 import Player from "./Pages/Player";
 import ChoosePlan from "./Pages/ChoosePlan";
 import { getPremiumStatus } from "./substat";
+import { error } from "console";
 
 function App() {
   const [User, setuser] = useState<User | null>(null);
@@ -25,12 +26,12 @@ function App() {
   const [data, setdata] = useState<DocumentData | null>(null);
   const [modal, setmodal] = useState<boolean>(false);
   const [signup, setsignup] = useState<boolean>(false);
-  const [Suggested, setsuggested] = useState(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [savebook, setsavebook] = useState(false);
   const [finsihed, setfinished] = useState([])
-  const [selected, setselected] = useState<any>(null);
   const [premium, setpremium] = useState(false);
+  const [err, seterr] = useState(null);
+
 
   if (User && window.location.pathname === "/") {
     window.location.pathname = "/for-you";
@@ -55,30 +56,15 @@ function App() {
       setuser(user.user);
       setTimeout(() => {
         setmodal(false);
-      }, 500);
+      }, 500)
       setDoc(doc(db, "users", user.user.uid), {
         SavedBooks: [],
       }).then(() => {});
-    });
+    }).catch(err=>{
+      seterr(err.message)
+    })
   }
-  function calculateAudio() {
-    let audioTime = null;
-    const time = audioRef?.current?.duration;
-    if (time) {
-      const minutes = Math.floor(time / 60);
-      const remainingSeconds = Math.floor(time % 60);
-      if (minutes === 0 && selected) {
-        audioTime = `${remainingSeconds} secs`;
-      } else if (remainingSeconds === 0) {
-        audioTime = `${minutes} mins`;
-      } else if (selected) {
-        audioTime = `${minutes} mins ${remainingSeconds} secs`;
-      }
-      const newobj = { ...selected, audioTime: audioTime };
-      setselected(newobj);
-    }
-  }
-  
+
   async function getsubstat() {
       if (User) {
           const docRef = doc(db, "users", User.uid);
@@ -114,7 +100,9 @@ function App() {
       setTimeout(() => {
         setmodal(false);
       }, 500);
-    });
+    }).catch(err=>{
+      seterr(err.message)
+    })
   }
   function signout() {
     signOut(auth);
@@ -136,6 +124,7 @@ function App() {
             path="/"
             element={
               <Home
+              err={err}
                 signup={signup}
                 setsignup={setsignup}
                 user={User}
@@ -155,11 +144,7 @@ function App() {
               sidebar={sidebar}
               setsidebar={setsidebar}
                 audioRef={audioRef}
-                selected={selected}
-                setselected={setselected}
-                calculateAudio={calculateAudio}
-                setsuggested={setsuggested}
-                Suggested={Suggested}
+                err={err}
                 signup={signup}
                 setsignup={setsignup}
                 user={User}
@@ -176,6 +161,7 @@ function App() {
             path="/Library"
             element={
               <Library
+              err={err}
               sidebar={sidebar}
               setsidebar={setsidebar}
                 data={data}
@@ -195,6 +181,7 @@ function App() {
             path="/Settings"
             element={
               <Settings
+              err={err}
               sidebar={sidebar}
               setsidebar={setsidebar}
                 premium={premium}

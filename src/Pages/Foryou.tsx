@@ -8,40 +8,57 @@ import { Carousel } from "react-responsive-carousel";
 
 
 type ForYouProps = {
-  user: any; // Replace 'any' with the actual type of 'user'
+  
   audioRef: React.RefObject<HTMLAudioElement>;
-  selected: any; // Replace 'any' with the actual type of 'selected'
-  setselected: React.Dispatch<React.SetStateAction<any>>;
-  setsuggested: React.Dispatch<React.SetStateAction<any[]>>;
-  Suggested: any[]; // Replace 'any[]' with the actual type of 'Suggested'
+  user: any; 
+
 };
 
-function ForYou({ user, audioRef, selected, setselected, setsuggested, Suggested }: ForYouProps) {
-  const [recommended, setrecommended] = useState<any[]>([]);
-
+function ForYou({ user, audioRef,  }: ForYouProps) {
+  const [recommended, setrecommended] = useState<any>(null);
+  const [Suggested, setsuggested] = useState<any>(null);
+  const [selected, setselected] = useState<any>(null);
   useEffect(() => {
-    getrecommended();
-    getSuggested();
+      getrecommended();
+      getSuggested();
   }, []);
+  
 
   function getselected() {
     axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=selected').then((res) => {
-      setselected(res.data[0]);
+        setTimeout(() => {
+          
+          setselected(res.data[0]);
+        }, 500);
     });
   }
 
   function getrecommended() {
     axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=recommended').then((res) => {
-      setrecommended(res.data);
+        setTimeout(() => {
+          
+          setrecommended(res.data);
+        }, 500);
     });
   }
 
   function getSuggested() {
     axios.get('https://us-central1-summaristt.cloudfunctions.net/getBooks?status=suggested').then((res) => {
-      setsuggested(res.data);
+      setTimeout(() => {
+        
+        setsuggested(res.data);
+      }, 500);
     });
   }
 
+
+  
+
+
+
+
+
+console.log(Suggested)
   function calculateAudio() {
     const duration = document.querySelectorAll('.selected__book--duration');
     let audioTime = "";
@@ -63,9 +80,10 @@ function ForYou({ user, audioRef, selected, setselected, setsuggested, Suggested
  
   
   useEffect(()=>{
-    getselected()
-    getSuggested()
-    getrecommended()
+      
+      getselected()
+      getSuggested()
+      getrecommended()
   },[window.location.pathname])
 
   return (
@@ -100,12 +118,12 @@ function ForYou({ user, audioRef, selected, setselected, setsuggested, Suggested
       <div className='for-you__title'>Recommended For You</div>
     <div className="for-you__sub--title">We think you'll like these</div>
 
-    <Books recommended={recommended}  ></Books>
+    <Books setrecommended={setrecommended} recommended={recommended}  ></Books>
       </div>
       <div>
       <div className='for-you__title'>Suggested Books</div>
     <div className="for-you__sub--title">Browse those books</div>
-      <Books  recommended={Suggested} ></Books>
+      <Books  setrecommended={setsuggested} recommended={Suggested} ></Books>
       </div>
     </div>
   )

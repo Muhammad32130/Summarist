@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { AiFillFileText, AiFillBulb, AiFillAudio } from "react-icons/ai";
 import { BsStarFill, BsStarHalf } from "react-icons/bs";
 import { BiCrown } from "react-icons/bi";
@@ -10,17 +10,18 @@ import Modal from "../Components/Modal";
 
 
 type HomeProps = {
-  modal: boolean; // Replace 'any' with the actual type of 'modal'
-  signup: boolean; // Replace 'any' with the actual type of 'signup'
-  setsignup: any; // Replace 'any' with the actual type of 'setsignup'
-  setmodal: any; // Replace 'any' with the actual type of 'setmodal'
-  guestLogin: Function; // Replace 'any' with the actual type of 'guestLogin'
-  Signupuser: Function; // Replace 'any' with the actual type of 'Signupuser'
-  Loginuser: Function; // Replace 'any' with the actual type of 'Loginuser'
-  user: Object | null; // Replace 'any' with the actual type of 'user'
+  modal: boolean; 
+  signup: boolean; 
+  setsignup: Dispatch<SetStateAction<boolean>>; 
+  setmodal: Dispatch<SetStateAction<boolean>>;  
+  guestLogin: Function;  
+  Signupuser: Function;  
+  Loginuser: Function;  
+  user: Object | null;
+  err:any;  
 };
 
-const Home: React.FC<HomeProps> = ({ modal, signup, setsignup, setmodal, guestLogin, Signupuser, Loginuser, user }: HomeProps) => {
+const Home: React.FC<HomeProps> = ({ modal,err, signup, setsignup, setmodal, guestLogin, Signupuser, Loginuser, user }: HomeProps) => {
   function statisticsHeading() {
     let statistics__content = document.querySelectorAll(".statistics__content--header");
     for (let i = 0; i < statistics__content.length; i++) {
@@ -71,7 +72,7 @@ const Home: React.FC<HomeProps> = ({ modal, signup, setsignup, setmodal, guestLo
       <section id="landing">
         {modal && 
           
-                <Modal user={user} guestLogin={guestLogin} signup={signup} Signupuser={Signupuser} Loginuser={Loginuser} setmodal={setmodal} setsignup={setsignup}></Modal>
+                <Modal user={user} err={err} guestLogin={guestLogin} signup={signup} Signupuser={Signupuser} Loginuser={Loginuser} setmodal={setmodal} setsignup={setsignup}></Modal>
 
         }
         <div className="container">

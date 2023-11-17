@@ -31,10 +31,13 @@ function Search({sidebar, setsidebar}) {
   }
   useEffect(() => {
     if (search?.length < 1) {
-      setbooksearch(null);
+      setbooksearch(null); 
       setloading(false);
     }
   });
+  useEffect(()=>{
+    setloading(false)
+  },[search])
 
   function audiotime(time, id) {
     setAudioDurations((prevAudioDurations) => ({
@@ -121,11 +124,11 @@ console.log(sidebar)
               })
             ) : loading === false ? (
               <>
-                <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
-                <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
-                <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
-                <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
-                <Skeleton width={406} marginbottom={10} height={120}></Skeleton>
+                <Skeleton width={"100%"} marginbottom={10} height={120}></Skeleton>
+                <Skeleton width={"100%"} marginbottom={10} height={120}></Skeleton>
+                <Skeleton width={"100%"} marginbottom={10} height={120}></Skeleton>
+                <Skeleton width={"100%"} marginbottom={10} height={120}></Skeleton>
+                <Skeleton width={"100%"} marginbottom={10} height={120}></Skeleton>
               </>
             ) : (
               "No books found"

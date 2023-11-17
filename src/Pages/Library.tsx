@@ -4,22 +4,23 @@ import Login from "../Components/Login";
 import Modal from "../Components/Modal";
 import Search from "../Components/Search";
 import Sidebar from "../Components/Sidebar";
-import {useState, useEffect} from 'react'
+import {useState, useEffect, Dispatch, SetStateAction} from 'react'
 import Skeleton from "../Components/Skeleton";
 
 type LibraryProps = {
   sidebar: boolean,
-  setsidebar: any,
-  user: any; // Replace 'any' with the actual type of 'user'
-  data: any; // Replace 'any' with the actual type of 'data'
-  guestLogin: any; // Replace 'any' with the actual type of 'guestLogin'
-  signup: any; // Replace 'any' with the actual type of 'signup'
-  Signupuser: any; // Replace 'any' with the actual type of 'Signupuser'
-  Loginuser: any; // Replace 'any' with the actual type of 'Loginuser'
-  setsignup: any; // Replace 'any' with the actual type of 'setsignup'
-  signout: any; // Replace 'any' with the actual type of 'signout'
-  modal: any; // Replace 'any' with the actual type of 'modal'
-  setmodal: any; // Replace 'any' with the actual type of 'setmodal'
+  setsidebar: Dispatch<SetStateAction<boolean>>,
+  user: any; 
+  data: any; 
+  guestLogin: Function; 
+  signup: any; 
+  Signupuser: Function; 
+  Loginuser: Function;
+  setsignup: Dispatch<SetStateAction<boolean>>; 
+  signout: Function;
+  modal: boolean; 
+  setmodal: Dispatch<SetStateAction<boolean>>; 
+  err:any;
 };
 
 const Library: React.FC<LibraryProps> = ({
@@ -35,9 +36,10 @@ const Library: React.FC<LibraryProps> = ({
   signout,
   modal,
   setmodal,
+  err,
 }: LibraryProps) => {
-  const [savedbooks, setbooks] = useState<any[]>([]); // Define the type for savedbooks
-  const [finsihedBooks, setfinished] = useState<any[]>([]); // Define the type for finishedBooks
+  const [savedbooks, setbooks] = useState<any[]>([]); 
+  const [finsihedBooks, setfinished] = useState<any[]>([]); 
   const [loading, setloading] = useState(false);
 
   async function getBooks(data: any) {
@@ -50,7 +52,7 @@ const Library: React.FC<LibraryProps> = ({
       const bookData = responses.map((res) => res.data);
       return bookData;
     } catch (error) {
-      // Handle errors here
+   
       return [];
     }
   }
@@ -102,6 +104,7 @@ const Library: React.FC<LibraryProps> = ({
        <Search sidebar={sidebar} setsidebar={setsidebar}></Search>
       {modal && (
         <Modal
+        err={err}
           user={user}
           guestLogin={guestLogin}
           signup={signup}
@@ -128,8 +131,8 @@ const Library: React.FC<LibraryProps> = ({
                 </div>
               </div>
               : 
-              <Books recommended={savedbooks}></Books>
-             
+              <Books setrecommended={null} recommended={savedbooks}></Books>
+              
                 }
               <div className="for-you__title">Finished</div>
               <div className="for-you__sub--title">{finsihedBooks.length} items</div>
@@ -143,7 +146,7 @@ const Library: React.FC<LibraryProps> = ({
                 </div>
               </div>
             :
-            <Books recommended={finsihedBooks}></Books>  
+            <Books setrecommended={null} recommended={finsihedBooks}></Books>  
             
             }
            

@@ -1629,6 +1629,11 @@ background-color: #f1f6f4;
   cursor: pointer;
 }
 @media (max-width: 768px) {
+
+  .search__books--wrapper {
+    max-width: unset;
+    right: 0;
+}
   .sidebar__toggle--btn {
     display: flex;
 }

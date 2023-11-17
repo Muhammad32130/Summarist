@@ -3,8 +3,10 @@ import {useEffect, useRef} from "react"
 import google from "../images/google.webp";
 import {ImSpinner2} from 'react-icons/im'
 
-function Modal({ guestLogin,user, Signupuser,Loginuser, signup ,setmodal, setsignup}) {
+
+function Modal({ guestLogin,user,err, Signupuser,Loginuser, signup ,setmodal, setsignup}) {
     const ref = useRef(null);
+
     useEffect(() => {
         function handleClickOutside(event) {
           if (
@@ -30,10 +32,11 @@ function Modal({ guestLogin,user, Signupuser,Loginuser, signup ,setmodal, setsig
             <div ref={ref} className="auth">
               <div className="auth__content">
                 <div className="auth__title">{signup?"Sign up":"Log in"} to Summarist</div>
+                {err}
                 {
                   !signup &&
                   <>
-                  <Link to={'/for-you'}>
+                  <Link>
                   <button onClick={()=>{guestLogin()}} className="btn guest__btn--wrapper">
                   <figure className="google__icon--mask guest__icon--mask">
                     <svg

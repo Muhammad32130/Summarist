@@ -5,7 +5,7 @@ import { app, db } from "../Firebase";
 
 
 type ChoosePlanProps = {
-  user: any; // Replace 'any' with the actual type of 'user'
+  user: any;
 };
 
 function ChoosePlan({ user }: ChoosePlanProps) {

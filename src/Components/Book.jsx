@@ -10,7 +10,7 @@ import {TbBulb} from 'react-icons/tb'
 import {PiBookOpenTextBold} from 'react-icons/pi'
 import {BsBookmark} from 'react-icons/bs'
 import { Link } from "react-router-dom";
-import { arrayRemove, arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 import Modal from "./Modal";
 import Skeleton from "./Skeleton";
