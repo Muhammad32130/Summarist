@@ -171,6 +171,7 @@ button:disabled {
   width: 100%;
   margin: 0 auto;
   padding: 0 24px;
+  margin-left: 200px;
 }
 
 .container {
@@ -662,6 +663,9 @@ button:disabled {
 
   .remove--tablet {
     display: none;
+  }
+  .row{
+    margin-left: 0;
   }
 }
 
@@ -1571,6 +1575,7 @@ background-color: #f1f6f4;
 
 
 .search__books--wrapper {
+  z-index: 99;
   display: flex;
   flex-direction: column;
   max-width: 440px;
